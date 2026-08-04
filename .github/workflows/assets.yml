@@ -1,0 +1,25 @@
+name: Update WordPress.org assets and readme
+
+# Runs on every push to main. Lets you update the banner, icon, screenshots
+# or the readme.txt description WITHOUT cutting a new plugin version.
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  assets:
+    name: Sync assets and readme
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update assets and readme
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: welcomify
+          ASSETS_DIR: .wordpress-org

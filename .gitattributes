@@ -1,0 +1,8 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Binary assets — never normalize
+*.png binary
+*.webp binary
+*.jpg binary
+*.gif binary

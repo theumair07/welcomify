@@ -1,0 +1,22 @@
+# Files and folders that must NOT ship to WordPress.org.
+# Everything listed here is stripped before the plugin is pushed to SVN trunk.
+
+/.git
+/.github
+/.wordpress-org
+/.distignore
+/.gitattributes
+/.gitignore
+/node_modules
+/vendor
+/tests
+/.vscode
+/.idea
+README.md
+composer.json
+composer.lock
+package.json
+package-lock.json
+phpcs.xml.dist
+.DS_Store
+Thumbs.db

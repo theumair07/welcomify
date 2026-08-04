@@ -1,0 +1,26 @@
+name: Deploy to WordPress.org
+
+# Runs when a version tag is pushed, e.g. `git tag 1.5.0 && git push --tags`.
+# Pushes the plugin to SVN trunk, creates tags/<version>, and syncs
+# .wordpress-org/ into the SVN assets/ directory.
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy:
+    name: Deploy plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to WordPress.org
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: welcomify
+          ASSETS_DIR: .wordpress-org
