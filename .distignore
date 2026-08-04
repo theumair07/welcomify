@@ -13,6 +13,7 @@
 /.vscode
 /.idea
 README.md
+CONTRIBUTING.md
 composer.json
 composer.lock
 package.json

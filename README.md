@@ -3,66 +3,98 @@
 Transform the boring WordPress welcome dashboard into a beautiful design experience.
 Compatible with any page builder.
 
-> This is the development repository. The user-facing plugin description lives in
-> [`readme.txt`](readme.txt), which is what WordPress.org reads.
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/welcomify)](https://wordpress.org/plugins/welcomify/)
+[![License](https://img.shields.io/badge/license-GPLv2%2B-blue)](license.txt)
 
-- **WordPress.org:** https://wordpress.org/plugins/welcomify/
-- **Author:** [Umair Khan](https://umairyousafzai.com/)
-- **License:** GPL-2.0-or-later
+**Welcomify** lets you replace the default WordPress welcome panel with any page you
+create using your favorite page builder — Elementor, Gutenberg, Bricks, Divi, and more.
 
-## Development
+## Features
 
-The plugin lives directly in a local WordPress install via a symlink, so edits are
-live immediately — no copying.
+- **Role-Based Dashboards** — assign a different welcome page to each user role
+  (Administrator, Editor, Author, Contributor, Subscriber)
+- **Page Builder Compatible** — Elementor, Gutenberg, Bricks, Divi, Beaver Builder,
+  Breakdance, and more
+- **Dismissible Option** — let users dismiss the welcome panel, per role
+- **Clean Embed** — pages display without headers, footers, or sidebars
+- **Multisite Support** — full support for WordPress multisite networks
+- **Lightweight** — no bloat, just the features you need
+- **Translation Ready** — fully internationalized
 
-```powershell
-# Run once, in an ELEVATED PowerShell
-New-Item -ItemType SymbolicLink `
-  -Path   "C:\Users\Yousafzai\Local Sites\welcomify\app\public\wp-content\plugins\welcomify" `
-  -Target "D:\Projects\Welcomify\welcomify"
-```
+## Requirements
 
-## Releasing a new version
-
-Deployment to WordPress.org is fully automated by GitHub Actions. Never touch SVN by hand.
-
-1. Bump the version in **three** places — they must match exactly:
-   - `welcomify.php` → `Version:` header
-   - `welcomify.php` → `UMY_WDW_VER` constant
-   - `readme.txt` → `Stable tag:`
-2. Add the changelog entry to `readme.txt`.
-3. Commit, tag, push:
-
-```powershell
-git commit -am "Release 1.5.0"
-git tag 1.5.0
-git push origin main --tags
-```
-
-The [deploy workflow](.github/workflows/deploy.yml) then pushes to SVN `trunk`,
-creates `tags/1.5.0`, and syncs the assets.
-
-### Assets-only updates
-
-Changing the banner, icon, screenshots, or the readme description does **not**
-need a version bump. Just push to `main` — the
-[assets workflow](.github/workflows/assets.yml) handles it.
-
-## Repository layout
-
-| Path | Purpose |
+| | |
 | --- | --- |
-| `welcomify.php` | Plugin bootstrap, constants, embed mode |
-| `classes/` | Admin class — menus, settings, builder detection |
-| `includes/` | Admin screen templates |
-| `assets/` | CSS, JS and images that **ship** with the plugin |
-| `languages/` | Translation template (`.pot`) |
-| `.wordpress-org/` | Banner, icon and screenshots for the WP.org listing (**not** shipped) |
-| `.distignore` | Files excluded from the deployed plugin |
+| WordPress | 5.2 or higher |
+| PHP | 7.4 or higher |
 
-## Required GitHub secrets
+## Installation
 
-| Secret | Value |
-| --- | --- |
-| `SVN_USERNAME` | WordPress.org username |
-| `SVN_PASSWORD` | WordPress.org password |
+Install from the WordPress plugin directory:
+
+**Plugins → Add New → search "Welcomify" → Install → Activate**
+
+Or manually: upload the plugin folder to `/wp-content/plugins/` and activate it from
+the **Plugins** menu.
+
+## How it works
+
+Welcomify offers two ways to pick your dashboard content, depending on your builder.
+
+### Elementor & Bricks (templates)
+
+1. Go to **Elementor → Templates** or **Bricks → Templates** and create a template
+2. Design your welcome content and save
+3. Go to **Welcomify** in the admin menu
+4. Pick your template from the **Elementor Templates** or **Bricks Templates** group
+5. Assign it to a user role and save
+
+### Gutenberg, Divi, Beaver Builder, Breakdance & others (pages)
+
+1. Create a WordPress page with your preferred builder
+2. Design your welcome content — the page may be published, private, draft, or
+   password protected
+3. Go to **Welcomify** in the admin menu
+4. Pick your page from the **Pages** group
+5. Assign it to a user role and save
+
+Users now see your custom content instead of the default WordPress welcome panel.
+
+## Use cases
+
+- Branded onboarding for new users
+- Announcements targeted at specific roles
+- Quick-start guides for content creators
+- Analytics dashboards for administrators
+- Custom welcome messages for clients
+
+## FAQ
+
+**Does this require Elementor?**
+No. Elementor is fully supported, but any page builder — or plain Gutenberg — works.
+
+**Will this work with my theme?**
+Yes. The page is embedded in an iframe, so it renders independently of your theme.
+
+**What happens if I delete an assigned page?**
+Welcomify detects it and falls back to the default WordPress welcome panel.
+
+**Can I use draft, private, or password protected pages?**
+Yes — useful for welcome pages you don't want visible on the front end.
+
+## Links
+
+- [Plugin page on WordPress.org](https://wordpress.org/plugins/welcomify/)
+- [Support forum](https://wordpress.org/support/plugin/welcomify/)
+- [Changelog](readme.txt)
+
+## Contributing
+
+Development setup and the release process are documented in
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+GPL-2.0-or-later — see [license.txt](license.txt).
+
+Built by [Umair Khan](https://umairyousafzai.com/).
