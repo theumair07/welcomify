@@ -1,11 +1,14 @@
 name: Update WordPress.org assets and readme
 
-# Runs on every push to main. Lets you update the banner, icon, screenshots
-# or the readme.txt description WITHOUT cutting a new plugin version.
+# Manual only — run it from the Actions tab when you want to push new artwork
+# or an updated readme description to WordPress.org WITHOUT cutting a release.
+#
+# Why not on every push: this action refuses to run when anything else in trunk
+# differs from what is published, which is the normal state between releases.
+# On a push trigger it would fail constantly. Run it right after a release, when
+# trunk and main match.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   assets:

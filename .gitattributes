@@ -1,8 +1,6 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-
-# Binary assets — never normalize
-*.png binary
-*.webp binary
-*.jpg binary
-*.gif binary
+# Do NOT normalize line endings.
+#
+# The published plugin has mixed endings (some files CRLF, some LF). Letting Git
+# rewrite them makes every file look modified against the WordPress.org SVN copy,
+# which breaks deploy tooling that compares the two. Store bytes exactly as-is.
+* -text
