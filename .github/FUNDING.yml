@@ -1,0 +1,11 @@
+# Shows a "Sponsor" button on the repository page.
+# Uncomment a line and fill in your username once the account exists —
+# GitHub hides entries it cannot resolve.
+
+# github: theumair07          # requires GitHub Sponsors to be enabled on your account
+# buy_me_a_coffee: theumair07
+# ko_fi: theumair07
+# patreon: theumair07
+
+custom:
+  - https://umairyousafzai.com/

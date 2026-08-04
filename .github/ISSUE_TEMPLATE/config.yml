@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support question
+    url: https://wordpress.org/support/plugin/welcomify/
+    about: Need help using Welcomify? Ask on the WordPress.org support forum.
+  - name: Leave a review
+    url: https://wordpress.org/support/plugin/welcomify/reviews/#new-post
+    about: Enjoying the plugin? A review on WordPress.org helps a lot.

@@ -1,0 +1,95 @@
+name: Bug report
+description: Something in Welcomify is not working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        If you just need help using the plugin, the
+        [WordPress.org support forum](https://wordpress.org/support/plugin/welcomify/)
+        is usually the faster route.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to Welcomify → Settings
+        2. Select a page for the Editor role
+        3. Save
+        4. Log in as an Editor and open the dashboard
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Welcomify version
+      placeholder: "1.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: wp-version
+    attributes:
+      label: WordPress version
+      placeholder: "6.9"
+    validations:
+      required: true
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: "8.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: builder
+    attributes:
+      label: Which page builder are you using?
+      options:
+        - Gutenberg (Block Editor)
+        - Elementor
+        - Bricks
+        - Divi
+        - Beaver Builder
+        - Breakdance
+        - Oxygen
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: multisite
+    attributes:
+      label: Is this a multisite network?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, console errors, PHP notices, or a list of other active plugins.
