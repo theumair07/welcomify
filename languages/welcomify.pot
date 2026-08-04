@@ -1,88 +1,168 @@
-# Copyright (C) 2024 Umair Khan
-# This file is distributed under the same license as the Welcome Dashboard plugin.
+# Copyright (C) 2026 Umair Khan
+# This file is distributed under the GNU General Public License v2.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Welcome Dashboard 1.0.0\n"
-"Report-Msgid-Bugs-To: https://umairyousafzai.com/\n"
-"POT-Creation-Date: 2024-12-19T00:00:00+00:00\n"
+"Project-Id-Version: Welcomify 1.4.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/welcomify/\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-04T21:14:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: WP-CLI 2.8.1\n"
-"X-Domain: welcome-dashboard\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: welcomify\n"
 
-#: classes/class-umy-wdw-admin.php
-msgid "Welcome Dashboard"
+#. Plugin Name of the plugin
+#: welcomify.php
+#: classes/class-umy-wdw-admin.php:82
+msgid "Welcomify - Custom Welcome Dashboard"
 msgstr ""
 
-#: classes/class-umy-wdw-admin.php
+#. Plugin URI of the plugin
+#: welcomify.php
+msgid "https://github.com/theumair07/welcomify"
+msgstr ""
+
+#. Description of the plugin
+#: welcomify.php
+msgid "Transform the boring WordPress welcome dashboard into a beautiful design experience. Compatible with any page builder."
+msgstr ""
+
+#. Author of the plugin
+#: welcomify.php
+msgid "Umair Khan"
+msgstr ""
+
+#. Author URI of the plugin
+#: welcomify.php
+msgid "https://umairyousafzai.com/"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:263
+msgid "Welcomify"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:277
+#: classes/class-umy-wdw-admin.php:278
+#: welcomify.php:332
+msgid "Settings"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:287
+#: classes/class-umy-wdw-admin.php:288
+#: includes/white-label.php:20
+msgid "White Label"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:471
 msgid "Dashboard Welcome Content"
 msgstr ""
 
-#: includes/admin-settings.php
-msgid "Customize your WordPress dashboard with any page builder."
-msgstr ""
-
-#: includes/admin-settings.php
+#: includes/admin-settings.php:27
 msgid "successfully set as custom Dashboard."
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:31
 msgid "View Dashboard"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:45
 msgid "Please note, changing the template in subsite will override the main settings."
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:64
+msgid "Customize your WordPress dashboard with any page builder."
+msgstr ""
+
+#: includes/admin-settings.php:74
+#: includes/admin-settings.php:83
 msgid "User Role"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:75
+#: includes/admin-settings.php:86
 msgid "Page / Template"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:76
+#: includes/admin-settings.php:215
 msgid "Dismissible"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:119
+#: includes/admin-settings.php:138
 msgid "— Select —"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:148
 msgid "Pages"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:170
 msgid "Elementor Templates"
 msgstr ""
 
+#: includes/admin-settings.php:192
+msgid "Bricks Templates"
+msgstr ""
+
 #. translators: %s: User role name
-#: includes/admin-settings.php
+#: includes/admin-settings.php:217
+#, php-format
 msgid "Toggle dismissible for %s"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:238
 msgid "Hide settings from network subsites"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:251
 msgid "Save Changes"
 msgstr ""
 
-#: includes/admin-settings.php
+#: includes/admin-settings.php:263
 msgid "Create a page with any WordPress page builder, then select it here to display as the welcome panel on your dashboard."
 msgstr ""
 
-#: includes/welcome-panel.php
+#: includes/template-library.php:26
+msgid "Template Library"
+msgstr ""
+
+#: includes/template-library.php:27
+msgid "Import beautiful pre-designed templates with one click."
+msgstr ""
+
+#: includes/template-library.php:43
+#: includes/template-library.php:47
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/template-library.php:51
+msgid "One-click import for Elementor, Bricks, Divi & Gutenberg templates. Launch beautiful dashboards instantly."
+msgstr ""
+
+#: includes/template-library.php:57
+msgid "Upgrade to Welcomify Pro"
+msgstr ""
+
+#: includes/welcome-panel.php:9
 msgid "Dismiss"
 msgstr ""
 
-#: welcome-dashboard.php
-msgid "Settings"
+#: includes/white-label.php:21
+msgid "Rebrand and customize the plugin appearance to match your brand."
+msgstr ""
+
+#: includes/white-label.php:33
+msgid "Coming Soon"
+msgstr ""
+
+#: includes/white-label.php:35
+msgid "White labeling options are on the way. You'll be able to customize the plugin name, branding, and visibility to match your business."
+msgstr ""
+
+#: welcomify.php:352
+msgid "Leave a Review"
 msgstr ""
