@@ -3,7 +3,7 @@
  * Plugin Name: Welcomify - Custom Welcome Dashboard
  * Plugin URI: https://github.com/theumair07/welcomify
  * Description: Transform the boring WordPress welcome dashboard into a beautiful design experience. Compatible with any page builder.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Requires at least: 5.2
  * Requires PHP: 7.4
  * Author: Umair Khan
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'UMY_WDW_VER', '1.4.0' );
+define( 'UMY_WDW_VER', '1.4.1' );
 define( 'UMY_WDW_DIR', plugin_dir_path( __FILE__ ) );
 define( 'UMY_WDW_URL', plugins_url( '/', __FILE__ ) );
 define( 'UMY_WDW_PATH', plugin_basename( __FILE__ ) );

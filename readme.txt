@@ -4,7 +4,7 @@ Tags: dashboard, welcome panel, elementor, gutenberg, page builder
 Requires at least: 5.2
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,10 @@ Yes, you can use pages with any status — published, draft, private, or even pa
 
 == Changelog ==
 
+= 1.4.1 =
+* Updated the translation template so all current strings are available to translators
+* No functional changes
+
 = 1.4.0 =
 * New modern dropdown UI with keyboard navigation support
 * Renamed "Dashboard" submenu label to "Settings" for clarity
@@ -152,6 +156,9 @@ Yes, you can use pages with any status — published, draft, private, or even pa
 * Translation ready
 
 == Upgrade Notice ==
+
+= 1.4.1 =
+Translation template refreshed. No functional changes.
 
 = 1.4.0 =
 New dropdown UI, Elementor & Bricks template support, and improved builder detection.
