@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="Welcomify">
+	<description>Coding standard for Welcomify (WordPress Coding Standards).</description>
+
+	<file>.</file>
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<!-- Class files keep the plugin prefix (class-umy-wdw-*.php) to avoid name clashes. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<!-- The main plugin file holds the bootstrap class plus its activation and Plugins-page hooks. -->
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed"/>
+		<!-- .gitattributes stores files byte-for-byte (some CRLF, some LF), matching the WordPress.org SVN copy. -->
+		<exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="welcomify"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="umy_wdw"/>
+				<element value="UMY_WDW"/>
+			</property>
+		</properties>
+	</rule>
+
+	<config name="minimum_wp_version" value="5.2"/>
+	<config name="testVersion" value="7.4-"/>
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

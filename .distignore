@@ -7,6 +7,7 @@
 /.distignore
 /.gitattributes
 /.gitignore
+/.pcpignore
 /node_modules
 /vendor
 /tests
@@ -19,5 +20,7 @@ composer.lock
 package.json
 package-lock.json
 phpcs.xml.dist
+phpunit.xml.dist
+.phpunit.result.cache
 .DS_Store
 Thumbs.db

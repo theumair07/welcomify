@@ -6,3 +6,4 @@ vendor/
 Thumbs.db
 *.log
 *.zip
+.phpunit.result.cache
