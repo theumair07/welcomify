@@ -1,179 +1,185 @@
 === Welcomify - Custom Welcome Dashboard ===
 Contributors: theumair07
-Tags: dashboard, welcome panel, elementor, gutenberg, page builder
+Tags: dashboard, welcome panel, elementor, bricks, page builder
 Requires at least: 5.2
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Transform the boring WordPress dashboard into a beautiful design experience. Compatible with any page builder.
+Replace the WordPress dashboard welcome panel with your own design, per user role. Works with Bricks, Elementor, Gutenberg and other builders.
 
 == Description ==
 
-**Welcomify** allows you to replace the default WordPress welcome panel with any page you create using your favorite page builder - Elementor, Gutenberg, Bricks, Divi, and more.
+**Welcomify** replaces the default WordPress welcome panel with a design you build yourself. Show a different design to each user role, including custom roles.
 
-= Key Features =
+= How it works =
 
-* **Role-Based Dashboards** - Assign different welcome pages for each user role (Administrator, Editor, Author, Contributor, Subscriber)
-* **Page Builder Compatible** - Works with Elementor, Gutenberg, Bricks, Divi, Beaver Builder, Breakdance, and more
-* **Dismissible Option** - Allow users to dismiss the welcome panel if desired
-* **Clean Embed** - Pages are displayed cleanly without headers, footers, or sidebars
-* **Multisite Support** - Full support for WordPress multisite networks
-* **Lightweight** - No bloat, just the features you need
-* **Translation Ready** - Fully internationalized and ready for translation
+How you create the design depends on your page builder.
 
-= Use Cases =
+**Bricks Builder and Elementor: use a template**
 
-* Create a branded onboarding experience for new users
-* Display important announcements to specific user roles
-* Show quick-start guides for content creators
-* Present analytics dashboards to administrators
-* Welcome clients with custom messages
+1. Create a template: **Bricks > Templates** or **Elementor > Templates**.
+2. Design your welcome content and publish the template.
+3. Go to **Welcomify > Settings**. For each role, pick the template from **Bricks Templates** or **Elementor Templates**.
+4. Click **Save Changes**.
 
-= How It Works =
+Templates work for every role, also for roles that cannot open the builder. Visitors cannot open them.
 
-Welcomify supports two ways to display content on the dashboard, depending on your page builder:
+Pages built with Bricks or Elementor are not listed. For these two builders, always use a template.
 
-**For Elementor & Bricks (Templates)**
+**Gutenberg, Kadence, Divi, Beaver Builder, Breakdance and other editors: use a page**
 
-1. Go to **Elementor > Templates** or **Bricks > Templates** and create a new template
-2. Design your welcome dashboard content and save the template
-3. Go to **Welcomify** in the admin menu
-4. Select your template from the **Elementor Templates** or **Bricks Templates** section in the dropdown
-5. Assign it to a user role and save
+1. Go to **Pages > Add New** and design the page with your editor.
+2. Set the page **Visibility** to **Private**, so visitors cannot open it. (Published pages also work.)
+3. Go to **Welcomify > Settings**. For each role, pick the page from **Pages**.
+4. Click **Save Changes**.
 
-**For Gutenberg, Divi, Beaver Builder, Breakdance & Others (Pages)**
+**Welcomify > Getting Started** shows these steps inside WordPress, with links to the right screens.
 
-1. Create a new WordPress page using your preferred page builder
-2. Design your welcome dashboard content — the page can be published, private, or even password protected
-3. Go to **Welcomify** in the admin menu
-4. Select your page from the **Pages** section in the dropdown — it will show a label indicating which builder was used
-5. Assign it to a user role and save
+= Features =
 
-That's it! When users visit the WordPress dashboard, they will see your custom content instead of the default welcome panel.
+* **A design per role** - A different page or template for every role, including custom roles.
+* **Any page builder** - Bricks and Elementor templates, or a page built with Gutenberg, Kadence, Divi, Beaver Builder, Breakdance and more.
+* **Dismissible** - Per role: let users close the panel. They can bring it back from Screen Options.
+* **Hide other widgets** - Per role: remove the other dashboard widgets, so only your design is shown.
+* **Clean display** - The site header, footer, sidebar and page title are hidden inside the panel.
+* **Secure** - Your template is loaded with a short-lived link that only works for the logged-in user and that template.
+* **Multisite** - Use pages and templates from the main site on every subsite.
+* **Lightweight and translation ready**
+
+= Use cases =
+
+* A branded onboarding screen for new users
+* Announcements for specific user roles
+* Quick-start guides for content creators
+* A client welcome screen with links and contact details
 
 == Installation ==
 
-1. Upload the plugin folder to `/wp-content/plugins/` directory
-2. Activate the plugin through the **Plugins** menu in WordPress
-3. Go to **Welcomify** main menu to configure
-4. Select a page created with any page builder and assign it to user roles
+1. Install Welcomify from **Plugins > Add New**, or upload the plugin folder to `/wp-content/plugins/`.
+2. Activate the plugin.
+3. Open **Welcomify > Getting Started** and follow the steps for your page builder.
+4. Open **Welcomify > Settings**, choose a page or template for each role and save.
 
 == Frequently Asked Questions ==
 
-= Does this plugin require Elementor? =
+= Does it work with custom user roles? =
 
-No! While Elementor is fully supported, you can use any page builder or the default WordPress Block Editor (Gutenberg).
+Yes. Every role on your site gets its own card in the settings, including roles added by other plugins.
 
-= Can I show different pages to different user roles? =
+= Do I need Elementor or Bricks? =
 
-Yes! This is the core feature. You can assign a unique page to each user role.
+No. You can use any editor, including the default WordPress Block Editor (Gutenberg).
+
+= Why don't I see my Elementor or Bricks page in the list? =
+
+For Elementor and Bricks, Welcomify uses templates, not pages. Create a template under Elementor > Templates or Bricks > Templates and it appears in the list.
+
+= Can visitors see my welcome page? =
+
+Not if you follow the steps: Bricks and Elementor templates cannot be opened by visitors, and other pages should be set to Private. Welcomify loads them in the dashboard with a short-lived link that only works for the logged-in user.
+
+= Can I use draft or password protected pages? =
+
+Use Private pages. Drafts are only shown to users who are allowed to edit them (usually Administrators and Editors). Password protected pages show the password form inside the dashboard.
+
+= Can users close the welcome panel? =
+
+Yes, if you switch on **Dismissible** for their role. They can show it again under **Screen Options > Welcome** on the dashboard.
+
+= What does "Hide other widgets" do? =
+
+It removes the other dashboard widgets (Activity, Quick Draft, widgets from other plugins and so on) for that role, so only your design is shown. It stays that way when the user closes the panel. It is on by default.
 
 = Will this work with my theme? =
 
-Yes, the plugin embeds your page content in an iframe, so it works independently of your theme.
+Yes. The design is shown in a frame inside the dashboard, without your theme's header, footer and sidebar.
 
 = Is multisite supported? =
 
-Yes, full multisite support is included. You can even hide settings from subsites if needed.
+Yes. Subsites can use pages and templates from the main site, and you can hide the settings from subsites.
 
-= Can users dismiss the welcome panel? =
+= What happens if I delete the assigned page or template? =
 
-Yes, you can enable/disable the dismissible option for each user role individually.
-
-= Can I use Elementor or Bricks templates directly? =
-
-Yes! For Elementor and Bricks, you select saved templates directly from the **Elementor Templates** or **Bricks Templates** sections in the dropdown. Simply go to Elementor > Templates or Bricks > Templates, create your design there, and it will appear in the Welcomify dropdown. For all other builders (Gutenberg, Divi, Beaver Builder, Breakdance), you create a regular WordPress page instead.
-
-= What happens if I delete an assigned page? =
-
-The plugin automatically detects deleted pages and falls back to the default WordPress welcome panel. No broken dashboards!
-
-= Can I use draft, private, or password protected pages? =
-
-Yes, you can use pages with any status — published, draft, private, or even password protected. This is useful for creating welcome pages that won't be visible on the front end or indexed by search engines.
+The dashboard shows the default WordPress welcome panel again until you choose a new one.
 
 == Screenshots ==
 
-1. **Admin Settings Panel** - Easily configure which page to show for each user role from a clean, modern interface.
-2. **Page & Template Selection** - Support for Elementor templates, Gutenberg pages, and standard WordPress pages.
-3. **Custom Welcome Dashboard** - A completely transformed dashboard experience for your users with key actions and resources.
+1. Your own dashboard per role - an Administrator dashboard built with Bricks.
+2. Settings - one card for every user role, with Dismissible and Hide other widgets.
+3. Choose a Bricks template, an Elementor template or any page.
+4. An Editor dashboard built with Elementor.
+5. Custom roles included - a client portal for a custom role, built with Bricks.
+6. Getting Started - the steps for each page builder.
 
 == Changelog ==
 
+= 1.5.0 =
+* New: Getting Started page with steps for each page builder.
+* New: Settings page with a card for every user role, a save bar and an unsaved-changes warning.
+* New: "Hide other widgets" option per role.
+* New: Users of every role can close the welcome panel and show it again from Screen Options.
+* Changed: New design for all Welcomify admin screens.
+* Changed: New screenshots.
+* Fixed: Custom roles saw the home page instead of the selected Bricks or Elementor template.
+* Fixed: Private pages now work as the welcome page for every role.
+* Fixed: Elementor's "Default Kit" is no longer offered as a template.
+* Fixed: The "Settings" link on the Plugins page.
+* Improved: Templates are loaded with a short-lived, signed link for the logged-in user only.
+* Improved: Keyboard and screen reader support on the settings page.
+* Improved: All plugin data is removed on uninstall.
+* Removed: White Label page and Pro upgrade screen.
+* Tested with WordPress 7.1.
+
 = 1.4.1 =
-* Updated the translation template so all current strings are available to translators
-* No functional changes
+* Updated the translation template.
 
 = 1.4.0 =
-* New modern dropdown UI with keyboard navigation support
-* Renamed "Dashboard" submenu label to "Settings" for clarity
-* Added Elementor Templates and Bricks Templates sections for template-based builders
-* Added Divi, Beaver Builder, and Breakdance page support in Pages section
-* Smart builder detection - labels only show when the builder plugin is active
-* Improved deleted page handling - automatically falls back to default WordPress welcome
-* Fixed layout with centered dropdown for consistent UI
+* New: Dropdown with keyboard navigation and grouped Pages / Elementor Templates / Bricks Templates.
+* New: Divi, Beaver Builder and Breakdance page support.
+* Changed: "Dashboard" submenu renamed to "Settings".
+* Improved: Builder labels only show when the builder is active.
+* Improved: Deleted pages fall back to the default WordPress welcome panel.
 
 = 1.3.3 =
-* Added PRO addon compatibility hooks
-* Added filter 'umy_wdw_settings_title' for title override
-* Added action 'umy_wdw_pro_template_library' for PRO template handling
-* Added PRO badge to Template Library submenu
-* Template Library now shows as PRO feature
+* New: Filter `umy_wdw_settings_title` to change the settings title.
 
 = 1.3.2 =
-* Fixed menu icon not displaying
-* Fixed template library page blank issue (images not loading on WP.org)
-* Renamed image files to use hyphens instead of spaces for better URL compatibility
+* Fixed: Menu icon not showing.
+* Fixed: Blank Template Library page.
 
 = 1.3.1 =
-* Fixed missing menu icon issue on some admin themes
-* Fixed blank template library page issue
+* Fixed: Missing menu icon on some admin themes.
 
 = 1.3.0 =
-* Moved plugin settings to a top-level admin menu for better accessibility
-* Added Template Library page with Upgrade to Pro option
-* Added compatibility detection for Bricks, Divi, Beaver Builder, Oxygen, and Breakdance
-* Improved admin UI with modern design elements
+* New: Top-level Welcomify menu.
+* New: Detection for Bricks, Divi, Beaver Builder, Oxygen and Breakdance.
 
 = 1.2.0 =
-* Fixed white space flickering when closing accordions or dynamic content in the embedded page
-* Improved iframe height detection using requestAnimationFrame for smoother updates
-* Added direct file access protection to uninstall.php
+* Fixed: White space flicker when content inside the panel opens or closes.
+* Added: Direct file access protection in uninstall.php.
 
 = 1.1.0 =
-* Fixed links opening inside the embedded iframe instead of navigating the main window
-* Links now correctly open in the parent window for proper navigation
+* Fixed: Links inside the panel opened inside the frame instead of the main window.
 
 = 1.0.0 =
-* Initial release
-* Role-based dashboard pages
-* Elementor, Gutenberg, Divi, Bricks Builder, Beaver Builder, Oxygen, and Breakdance support
-* Multisite support
-* Dismissible option per role
-* Translation ready
+* Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+Fixes custom roles seeing the home page instead of their template. Adds a new Settings page, a Getting Started guide and the "Hide other widgets" option.
 
 = 1.4.1 =
 Translation template refreshed. No functional changes.
 
 = 1.4.0 =
-New dropdown UI, Elementor & Bricks template support, and improved builder detection.
-
-= 1.3.2 =
-Fixed menu icon and template library images not displaying.
-
-= 1.3.1 =
-Fixed missing menu icon and blank template library page issues.
+New dropdown, Elementor and Bricks template support.
 
 = 1.3.0 =
-New top-level menu, Template Library page, and expanded page builder support.
-
-= 1.2.0 =
-Improved iframe responsiveness - closes and opens accordions smoothly without white space flicker.
+New top-level menu and more page builders.
 
 = 1.0.0 =
-Initial release of Welcomify.
+Initial release.
