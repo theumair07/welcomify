@@ -48,6 +48,11 @@ final class UMY_WDW_Plugin {
 	 */
 	public function __construct()
 	{
+		// Lets the dashboard iframe load builder templates for any role.
+		// Registered early so it runs before Bricks/Elementor check access.
+		require_once UMY_WDW_DIR . 'classes/class-umy-wdw-embed-access.php';
+		\UMY_WDW_Plugin\Embed_Access::init();
+
 		add_action( 'init', array( $this, 'loader' ) );
 	}
 
@@ -328,7 +333,7 @@ register_deactivation_hook( __FILE__, 'umy_wdw_deactivate' );
 function umy_wdw_plugin_action_links( $links ) {
 	$settings_link = sprintf(
 		'<a href="%s">%s</a>',
-		admin_url( 'options-general.php?page=umy-wdw-settings' ),
+		admin_url( 'admin.php?page=umy-wdw-settings' ),
 		__( 'Settings', 'welcomify' )
 	);
 	array_unshift( $links, $settings_link );
