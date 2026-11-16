@@ -89,6 +89,14 @@ final class Admin {
 	private $widgets_hidden = false;
 
 	/**
+	 * True while show_welcome_panel_meta() reads the stored value itself.
+	 *
+	 * @since 1.5.1
+	 * @var bool
+	 */
+	private $reading_welcome_meta = false;
+
+	/**
 	 * Initializes the admin settings.
 	 *
 	 * @since 1.0.0
@@ -130,9 +138,8 @@ final class Admin {
 	/**
 	 * Hides the Screen Options button when its panel would be empty.
 	 *
-	 * That is the case for a role without edit_theme_options (no WordPress Welcome checkbox),
-	 * whose panel is not dismissible (no Welcomify Welcome checkbox) and whose other widgets
-	 * are removed (no widget checkboxes).
+	 * That is the case when the panel is not dismissible (no Welcome checkbox, neither WordPress'
+	 * own nor Welcomify's) and the other widgets are removed (no widget checkboxes).
 	 *
 	 * @since 1.5.0
 	 * @param bool            $show   Whether to show the Screen Options button.
@@ -146,11 +153,47 @@ final class Admin {
 
 		$role = $this->get_user_role();
 
-		if ( $this->uses_own_panel_controls( $role ) && $this->widgets_hidden && empty( $this->settings[ $role ]['dismissible'] ) ) {
+		if ( $this->panel_active && $this->widgets_hidden && empty( $this->settings[ $role ]['dismissible'] ) ) {
 			return false;
 		}
 
 		return $show;
+	}
+
+	/**
+	 * Shows WordPress' own Welcome panel to users of a role that has a Welcomify template.
+	 *
+	 * WordPress reads the user setting show_welcome_panel and hides the panel when it is missing,
+	 * which it is for every user except the one who created the site. Not dismissible: always shown.
+	 * Dismissible: shown until the user closes it (WordPress then saves 0, which is respected).
+	 * Only added on the dashboard, so saving the setting (over AJAX) is not affected.
+	 *
+	 * @since 1.5.1
+	 * @param mixed  $value    Value to return instead of the stored one, or null for the stored one.
+	 * @param int    $user_id  User ID.
+	 * @param string $meta_key Meta key.
+	 * @param bool   $single   Whether a single value is requested.
+	 * @return mixed
+	 */
+	public function show_welcome_panel_meta( $value, $user_id, $meta_key, $single ) {
+		if ( 'show_welcome_panel' !== $meta_key || get_current_user_id() !== (int) $user_id || $this->reading_welcome_meta ) {
+			return $value;
+		}
+
+		$show = empty( $this->settings[ $this->current_role ]['dismissible'] );
+
+		if ( ! $show ) {
+			// metadata_exists() runs this filter again; the flag lets that call read the stored data.
+			$this->reading_welcome_meta = true;
+			$show                       = ! metadata_exists( 'user', $user_id, 'show_welcome_panel' );
+			$this->reading_welcome_meta = false;
+		}
+
+		if ( ! $show ) {
+			return $value;
+		}
+
+		return $single ? 1 : array( 1 );
 	}
 
 	/**
@@ -411,9 +454,13 @@ final class Admin {
 				remove_action( 'welcome_panel', 'wp_welcome_panel' );
 				add_action( 'welcome_panel', array( $this, 'welcome_panel' ) );
 
-				// custom fallback for the users who don't have
-				// enough capabilities to display welcome panel.
-				if ( ! current_user_can( 'edit_theme_options' ) ) {
+				if ( current_user_can( 'edit_theme_options' ) ) {
+					// These users get WordPress' own Welcome panel, which WordPress hides by default for
+					// everyone except the user who created the site. Show it for this role instead.
+					add_filter( 'get_user_metadata', array( $this, 'show_welcome_panel_meta' ), 10, 4 );
+				} else {
+					// Custom fallback for the users who don't have
+					// enough capabilities to display welcome panel.
 					add_action( 'admin_notices', array( $this, 'welcome_panel' ) );
 				}
 			}
@@ -677,8 +724,10 @@ body:has(#umy-wdw-dashboard-welcome:not(#welcome-panel *):not(.umy-wdw-is-dismis
 				}
 
 				if ( ! $dismissible ) {
+					// Not dismissible: no close button, and no WordPress "Welcome" checkbox in Screen Options.
 					$css .= '
-.welcome-panel .welcome-panel-close {
+.welcome-panel .welcome-panel-close,
+#adv-settings label[for="wp_welcome_panel-hide"] {
     display: none !important;
 }';
 				} else {

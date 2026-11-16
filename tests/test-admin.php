@@ -203,6 +203,62 @@ class Test_Admin extends WP_UnitTestCase {
 	}
 
 	/*
+	 * WordPress' own Welcome panel for roles with edit_theme_options (e.g. a copy of Administrator).
+	 */
+
+	/** Logs in a new user whose role is a copy of Administrator (not the site creator). */
+	private function login_admin_copy() {
+		add_role( 'umy_test_admin_copy', 'Admin copy', get_role( 'administrator' )->capabilities );
+		$user_id = self::factory()->user->create( array( 'role' => 'umy_test_admin_copy' ) );
+		wp_set_current_user( $user_id );
+		return $user_id;
+	}
+
+	public function test_welcome_panel_is_shown_by_default_for_an_admin_copy_role() {
+		$user_id = $this->login_admin_copy();
+		$page    = self::factory()->post->create( array( 'post_type' => 'page' ) );
+
+		$this->dashboard_panel_active( array( 'template' => $page, 'dismissible' => 1, 'hide_widgets' => 1 ), 'umy_test_admin_copy' );
+
+		// WordPress hides the panel when this is missing or 0; Welcomify answers 1 for a new user.
+		$this->assertSame( 1, (int) get_user_meta( $user_id, 'show_welcome_panel', true ) );
+		remove_role( 'umy_test_admin_copy' );
+	}
+
+	public function test_a_dismissible_panel_stays_closed_once_the_user_closed_it() {
+		$user_id = $this->login_admin_copy();
+		$page    = self::factory()->post->create( array( 'post_type' => 'page' ) );
+		update_user_meta( $user_id, 'show_welcome_panel', 0 ); // The user closed it.
+
+		$this->dashboard_panel_active( array( 'template' => $page, 'dismissible' => 1, 'hide_widgets' => 1 ), 'umy_test_admin_copy' );
+
+		$this->assertSame( 0, (int) get_user_meta( $user_id, 'show_welcome_panel', true ) );
+		remove_role( 'umy_test_admin_copy' );
+	}
+
+	public function test_a_non_dismissible_panel_is_always_shown() {
+		$user_id = $this->login_admin_copy();
+		$page    = self::factory()->post->create( array( 'post_type' => 'page' ) );
+		update_user_meta( $user_id, 'show_welcome_panel', 0 );
+
+		list( $admin ) = $this->dashboard_panel_active( array( 'template' => $page, 'dismissible' => 0, 'hide_widgets' => 1 ), 'umy_test_admin_copy' );
+
+		$this->assertSame( 1, (int) get_user_meta( $user_id, 'show_welcome_panel', true ) );
+		// Nothing left to switch in Screen Options, so the button is hidden too.
+		$this->assertFalse( $admin->screen_options_show( true, WP_Screen::get( 'dashboard' ) ) );
+		remove_role( 'umy_test_admin_copy' );
+	}
+
+	public function test_welcome_panel_setting_is_untouched_without_a_template() {
+		$user_id = $this->login_admin_copy();
+
+		$this->dashboard_panel_active( array( 'template' => 0 ), 'umy_test_admin_copy' );
+
+		$this->assertSame( '', get_user_meta( $user_id, 'show_welcome_panel', true ) );
+		remove_role( 'umy_test_admin_copy' );
+	}
+
+	/*
 	 * Template list.
 	 */
 

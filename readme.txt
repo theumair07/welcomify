@@ -4,7 +4,7 @@ Tags: dashboard, welcome panel, elementor, bricks, page builder
 Requires at least: 5.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,9 @@ The dashboard shows the default WordPress welcome panel again until you choose a
 
 == Changelog ==
 
+= 1.5.1 =
+* Fixed: The welcome panel is now shown by default to users of roles with full admin rights, such as a copy of the Administrator role.
+
 = 1.5.0 =
 * New: Getting Started page with steps for each page builder.
 * New: Settings page with a card for every user role, a save bar and an unsaved-changes warning.
@@ -168,6 +171,9 @@ The dashboard shows the default WordPress welcome panel again until you choose a
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.1 =
+Shows the welcome panel by default to roles with full admin rights.
 
 = 1.5.0 =
 Fixes custom roles seeing the home page instead of their template. Adds a new Settings page, a Getting Started guide and the "Hide other widgets" option.
