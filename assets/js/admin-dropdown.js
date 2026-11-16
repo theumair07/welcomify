@@ -150,9 +150,11 @@
 
             const value = optionElement.dataset.value;
             const site = optionElement.dataset.site || '';
-            const text = optionElement.querySelector('.umy-wdw-dropdown-option-title')?.textContent
-                || optionElement.textContent.trim();
-            const label = optionElement.querySelector('.umy-wdw-dropdown-option-label')?.textContent || '';
+            // Plain checks instead of optional chaining (?.), so older browsers can run this too.
+            const titleElement = optionElement.querySelector('.umy-wdw-dropdown-option-title');
+            const labelElement = optionElement.querySelector('.umy-wdw-dropdown-option-label');
+            const text = (titleElement && titleElement.textContent) || optionElement.textContent.trim();
+            const label = (labelElement && labelElement.textContent) || '';
 
             // Update hidden inputs
             if (this.hiddenInput) {
@@ -186,10 +188,18 @@
             optionElement.classList.add('is-selected');
             optionElement.setAttribute('aria-selected', 'true');
 
-            // Drafts are only visible to users who can edit them: the role card shows a note.
+            // Drafts are only visible to users who can edit them: cards of roles that can't get a note.
             const card = this.container.closest('.umy-wdw-role-card');
             if (card) {
-                card.classList.toggle('is-draft', optionElement.dataset.status === 'draft');
+                card.classList.toggle('is-draft', optionElement.dataset.status === 'draft' && card.dataset.seesDrafts !== '1');
+
+                // Screen readers read the note together with the dropdown while it is shown.
+                const note = card.querySelector('.umy-wdw-draft-note');
+                if (note && card.classList.contains('is-draft')) {
+                    this.trigger.setAttribute('aria-describedby', note.id);
+                } else {
+                    this.trigger.removeAttribute('aria-describedby');
+                }
             }
 
             if (shouldClose) {

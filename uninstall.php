@@ -31,7 +31,12 @@ delete_metadata( 'user', 0, 'umy_wdw_dismissed', '', true );
 
 // For multisite, clean up each site's options.
 if ( is_multisite() ) {
-	$umy_wdw_sites = get_sites( array( 'fields' => 'ids' ) );
+	$umy_wdw_sites = get_sites(
+		array(
+			'fields' => 'ids',
+			'number' => 0, // All sites, not only the first 100.
+		)
+	);
 
 	foreach ( $umy_wdw_sites as $umy_wdw_site_id ) {
 		switch_to_blog( $umy_wdw_site_id );

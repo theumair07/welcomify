@@ -106,9 +106,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 							$umy_wdw_has_template = ! empty( $settings[ $umy_wdw_role ]['template'] );
 							// On by default: roles saved before this option existed keep the clean dashboard they had.
 							$umy_wdw_hide_widgets = ! isset( $settings[ $umy_wdw_role ]['hide_widgets'] ) || ! empty( $settings[ $umy_wdw_role ]['hide_widgets'] );
-							// A draft is only shown to users who may edit it: the card then shows a note (admin-dropdown.js keeps it current).
-							$umy_wdw_is_draft = false;
-							if ( $umy_wdw_has_template ) {
+							// A draft is only shown to users who may edit it. Roles that can't (e.g. Author, Contributor,
+							// custom roles) get a note on their card; admin-dropdown.js keeps it current.
+							$umy_wdw_role_object = get_role( $umy_wdw_role );
+							$umy_wdw_sees_drafts = $umy_wdw_role_object && $umy_wdw_role_object->has_cap( 'edit_others_pages' ) && $umy_wdw_role_object->has_cap( 'edit_others_posts' );
+							$umy_wdw_is_draft    = false;
+							if ( $umy_wdw_has_template && ! $umy_wdw_sees_drafts ) {
 								foreach ( array( 'pages', 'elementor_templates', 'bricks_templates' ) as $umy_wdw_type ) {
 									if ( isset( $templates[ $umy_wdw_type ][ $settings[ $umy_wdw_role ]['template'] ]['status'] ) ) {
 										$umy_wdw_is_draft = 'draft' === $templates[ $umy_wdw_type ][ $settings[ $umy_wdw_role ]['template'] ]['status'];
@@ -118,7 +121,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 							}
 							?>
 			<div class="umy-wdw-card umy-wdw-role-card<?php echo $umy_wdw_has_template ? '' : ' is-unset'; ?><?php echo $umy_wdw_is_draft ? ' is-draft' : ''; ?>"
-				data-role="<?php echo esc_attr( $umy_wdw_role ); ?>">
+				data-role="<?php echo esc_attr( $umy_wdw_role ); ?>"
+				data-sees-drafts="<?php echo $umy_wdw_sees_drafts ? '1' : '0'; ?>">
 				<div class="umy-wdw-card-header">
 					<span class="umy-wdw-role-badge"><?php echo esc_html( $umy_wdw_role_title ); ?></span>
 				</div>
@@ -154,7 +158,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<button type="button" class="umy-wdw-dropdown-trigger" role="combobox"
 											aria-haspopup="listbox" aria-expanded="false"
 											aria-labelledby="umy-wdw-tpl-label-<?php echo esc_attr( $umy_wdw_role ); ?>"
-											aria-controls="umy-wdw-tpl-list-<?php echo esc_attr( $umy_wdw_role ); ?>">
+											aria-controls="umy-wdw-tpl-list-<?php echo esc_attr( $umy_wdw_role ); ?>"
+											<?php echo $umy_wdw_is_draft ? 'aria-describedby="umy-wdw-draft-note-' . esc_attr( $umy_wdw_role ) . '"' : ''; ?>>
 											<span class="umy-wdw-dropdown-selected">
 												<?php if ( $umy_wdw_selected_id && $umy_wdw_selected_title ) : ?>
 													<span class="umy-wdw-dropdown-selected-title"><?php echo esc_html( $umy_wdw_selected_title ); ?></span>
@@ -262,7 +267,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</div>
 								</div>
 						<p class="umy-wdw-field-hint"><?php esc_html_e( 'Pick a template to turn on the options below.', 'welcomify' ); ?></p>
-						<p class="umy-wdw-draft-note" role="note"><?php esc_html_e( 'This is a draft. Only Administrators and Editors can see it. Publish it or set it to Private.', 'welcomify' ); ?></p>
+						<p class="umy-wdw-draft-note" id="umy-wdw-draft-note-<?php echo esc_attr( $umy_wdw_role ); ?>" role="note"><?php esc_html_e( 'This is a draft, so users with this role will not see it. Set it to Private instead.', 'welcomify' ); ?></p>
 					</div>
 
 					<div class="umy-wdw-option">

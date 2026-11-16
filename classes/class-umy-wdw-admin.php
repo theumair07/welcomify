@@ -135,8 +135,8 @@ final class Admin {
 	 * are removed (no widget checkboxes).
 	 *
 	 * @since 1.5.0
-	 * @param bool       $show   Whether to show the Screen Options button.
-	 * @param \WP_Screen $screen Current screen.
+	 * @param bool            $show   Whether to show the Screen Options button.
+	 * @param \WP_Screen|null $screen Current screen.
 	 * @return bool
 	 */
 	public function screen_options_show( $show, $screen ) {
