@@ -58,14 +58,6 @@ final class Admin {
      */
     public $current_role;
 
-    /**
-     * Holds the white label page hook.
-     *
-     * @since 1.4.0
-     * @var string
-     */
-    public $white_label_page_hook;
-
 	/**
 	 * Initializes the admin settings.
 	 *
@@ -85,34 +77,6 @@ final class Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1000 );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_head', array( $this, 'admin_pro_badge_styles' ) );
-	}
-
-	/**
-	 * Output PRO badge styles in admin head.
-	 *
-	 * @since 1.3.3
-	 * @return void
-	 */
-	public function admin_pro_badge_styles() {
-		?>
-<style>
-#adminmenu .umy-wdw-pro-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #3b82f6 0%, #1e3a5f 100%);
-    color: #fff !important;
-    font-size: 8px;
-    font-weight: 600;
-    padding: 1px 4px;
-    border-radius: 2px;
-    margin-left: 4px;
-    vertical-align: middle;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    line-height: 1.4;
-}
-</style>
-<?php
 	}
 
 	/**
@@ -126,7 +90,6 @@ final class Admin {
 		// Only load on our plugin pages
 		$allowed_hooks = array(
 			'toplevel_page_' . $this->settings_page,
-			$this->white_label_page_hook
 		);
 
 		if ( ! in_array( $hook, $allowed_hooks, true ) ) {
@@ -280,28 +243,7 @@ final class Admin {
 				$slug,
 				$func
 			);
-
-			// Add "White Label" submenu with PRO badge
-			$this->white_label_page_hook = add_submenu_page(
-				$slug,
-				__( 'White Label', 'welcomify' ),
-				__( 'White Label', 'welcomify' ) . ' <span class="umy-wdw-pro-badge">PRO</span>',
-				$cap,
-				'umy-wdw-white-label',
-				array( $this, 'render_white_label' )
-			);
 		}
-	}
-
-	/**
-	 * Renders white label content.
-	 *
-	 * @since 1.4.0
-	 * @return void
-	 */
-	public function render_white_label()
-	{
-		include UMY_WDW_DIR . 'includes/white-label.php';
 	}
 
 	/**
