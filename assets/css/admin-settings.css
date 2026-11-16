@@ -135,12 +135,6 @@
     border: 1px solid;
 }
 
-.umy-wdw-notice-success {
-    background: var(--wdw-success-light);
-    border-color: #a7f3d0;
-    color: #065f46;
-}
-
 .umy-wdw-notice-warning {
     background: var(--wdw-warning-light);
     border-color: #fcd34d;
@@ -200,85 +194,6 @@
 
 .umy-wdw-card-body {
     padding: 0;
-}
-
-.umy-wdw-card-footer {
-    padding: 16px 24px;
-    background: var(--wdw-gray-50);
-    border-top: 1px solid var(--wdw-gray-100);
-}
-
-/* ================================================
-   SETTINGS TABLE
-   ================================================ */
-.umy-wdw-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    /* Fixed layout for consistent column widths */
-}
-
-/* Column widths - fixed for consistent layout */
-.umy-wdw-table colgroup .col-role {
-    width: 180px;
-}
-
-.umy-wdw-table colgroup .col-template {
-    width: auto;
-    /* Takes remaining space */
-}
-
-.umy-wdw-table colgroup .col-dismissible {
-    width: 120px;
-}
-
-/* Alternative: use nth-child for column widths */
-.umy-wdw-table th:first-child,
-.umy-wdw-table td:first-child {
-    width: 180px;
-}
-
-/* Center the Page/Template column */
-.umy-wdw-table th:nth-child(2),
-.umy-wdw-table td:nth-child(2) {
-    text-align: center;
-}
-
-/* Last two columns (Dismissible, Hide other widgets) */
-.umy-wdw-table th:nth-last-child(-n+2),
-.umy-wdw-table td:nth-last-child(-n+2) {
-    width: 130px;
-    text-align: center;
-}
-
-.umy-wdw-table thead th {
-    padding: 12px 24px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--wdw-gray-500);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: var(--wdw-gray-50);
-    border-bottom: 1px solid var(--wdw-gray-200);
-}
-
-.umy-wdw-table tbody tr {
-    transition: background var(--wdw-transition-fast);
-}
-
-.umy-wdw-table tbody tr:hover {
-    background: var(--wdw-gray-25);
-}
-
-.umy-wdw-table tbody td {
-    padding: 16px 24px;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--wdw-gray-100);
-}
-
-.umy-wdw-table tbody tr:last-child td {
-    border-bottom: none;
 }
 
 /* ================================================
@@ -707,14 +622,6 @@
     transform: scale(1);
 }
 
-/* Empty State */
-.umy-wdw-dropdown-empty {
-    padding: 20px;
-    text-align: center;
-    font-size: 13px;
-    color: var(--wdw-gray-400);
-}
-
 /* Responsive */
 @media screen and (max-width: 782px) {
     .umy-wdw-select-wrap {
@@ -817,22 +724,28 @@
     transform: translateY(0);
 }
 
-.umy-wdw-btn-success {
-    background: var(--wdw-success);
+/* A button made from a link (e.g. "Open Settings"): WordPress' a:hover / a:focus / a:active
+   rules would turn the text blue and add a blue ring, so keep the button's own colours. */
+a.umy-wdw-btn-primary,
+a.umy-wdw-btn-primary:visited,
+a.umy-wdw-btn-primary:hover,
+a.umy-wdw-btn-primary:focus,
+a.umy-wdw-btn-primary:active {
     color: var(--wdw-white);
-    padding: 8px 14px;
-    font-size: 13px;
-    border: 1px solid var(--wdw-success);
 }
 
-.umy-wdw-btn-success:hover,
-.umy-wdw-btn-success:focus,
-.umy-wdw-btn-success:active {
-    background: #059669;
-    color: var(--wdw-white);
-    border-color: #059669;
+a.umy-wdw-btn-primary:focus,
+a.umy-wdw-btn-primary:active {
+    background: var(--wdw-gray-800);
     outline: none;
-    box-shadow: none;
+    box-shadow: var(--wdw-shadow-sm);
+}
+
+/* Keyboard focus only: the same ring as the rest of the plugin */
+.umy-wdw-btn:focus-visible,
+a.umy-wdw-btn-primary:focus-visible {
+    outline: 2px solid var(--wdw-primary);
+    outline-offset: 2px;
 }
 
 /* ================================================
@@ -903,37 +816,6 @@
         border-radius: var(--wdw-radius-lg);
     }
 
-    .umy-wdw-table thead {
-        display: none;
-    }
-
-    .umy-wdw-table tbody tr {
-        display: block;
-        padding: 16px 20px;
-        border-bottom: 1px solid var(--wdw-gray-200);
-    }
-
-    .umy-wdw-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .umy-wdw-table tbody td {
-        display: block;
-        padding: 8px 0;
-        border: none;
-    }
-
-    .umy-wdw-table tbody td::before {
-        content: attr(data-label);
-        display: block;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--wdw-gray-500);
-        margin-bottom: 6px;
-    }
-
     .umy-wdw-select-wrap {
         max-width: 100%;
     }
@@ -961,193 +843,6 @@
 /* Hide default WP submit button */
 .umy-wdw-admin-wrap .submit {
     display: none;
-}
-
-/* ================================================
-   TEMPLATE LIBRARY - UPGRADE TO PRO
-   ================================================ */
-.umy-wdw-template-body {
-    position: relative;
-    min-height: 450px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 24px;
-    overflow: hidden;
-    background: var(--wdw-white);
-}
-
-/* Upgrade Modal Container - Elevated Look */
-.umy-wdw-upgrade-modal {
-    position: relative;
-    z-index: 10;
-    background: transparent;
-    border-radius: 20px;
-    padding: 20px 40px 40px 40px;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
-}
-
-/* Crown Icon */
-.umy-wdw-upgrade-icon {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.umy-wdw-upgrade-icon img {
-    width: 100px;
-    height: auto;
-    filter: drop-shadow(0 8px 20px rgba(17, 24, 39, 0.15));
-    display: block;
-}
-
-/* Icon Slice Effect */
-.umy-wdw-upgrade-icon::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(120deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.3) 40%,
-            rgba(255, 255, 255, 0.6) 50%,
-            rgba(255, 255, 255, 0.3) 60%,
-            transparent 100%);
-    transform: skewX(-25deg);
-    transition: left 0.8s ease;
-    pointer-events: none;
-}
-
-.umy-wdw-upgrade-icon:hover::after {
-    left: 150%;
-}
-
-/* Title */
-.umy-wdw-upgrade-title {
-    position: relative;
-    z-index: 1;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--wdw-gray-900);
-    margin: 0px 0 8px 0;
-    letter-spacing: -0.025em;
-}
-
-/* Description */
-.umy-wdw-upgrade-description {
-    position: relative;
-    z-index: 1;
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--wdw-gray-500);
-    margin: 0 0 16px 0;
-}
-
-/* Glass Slice Button */
-.umy-wdw-upgrade-btn {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    padding: 14px 24px;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: inherit;
-    color: var(--wdw-white);
-    background: #111827;
-    border: none;
-    border-radius: var(--wdw-radius-lg);
-    cursor: pointer;
-    text-decoration: none;
-    overflow: hidden;
-    box-shadow:
-        0 4px 15px rgba(17, 24, 39, 0.25),
-        0 1px 3px rgba(17, 24, 39, 0.1);
-    transition: all var(--wdw-transition-base);
-}
-
-/* Glass Slice Effect */
-.umy-wdw-upgrade-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(120deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.1) 40%,
-            rgba(255, 255, 255, 0.25) 50%,
-            rgba(255, 255, 255, 0.1) 60%,
-            transparent 100%);
-    transform: skewX(-25deg);
-    transition: left 1.2s ease;
-}
-
-.umy-wdw-upgrade-btn:hover::before {
-    left: 120%;
-}
-
-.umy-wdw-upgrade-btn:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 25px rgba(17, 24, 39, 0.35),
-        0 4px 10px rgba(17, 24, 39, 0.15);
-    color: var(--wdw-white);
-    background: #1f2937;
-}
-
-.umy-wdw-upgrade-btn:active {
-    transform: translateY(0);
-    color: var(--wdw-white);
-}
-
-.umy-wdw-upgrade-btn:focus,
-.umy-wdw-upgrade-btn:visited {
-    outline: none;
-    color: var(--wdw-white);
-    box-shadow:
-        0 4px 15px rgba(17, 24, 39, 0.25),
-        0 1px 3px rgba(17, 24, 39, 0.1);
-}
-
-/* Responsive */
-@media screen and (max-width: 480px) {
-    .umy-wdw-upgrade-modal {
-        padding: 36px 24px 32px;
-        margin: 0 16px;
-    }
-
-    .umy-wdw-upgrade-icon img {
-        width: 80px;
-    }
-
-    .umy-wdw-upgrade-title {
-        font-size: 24px;
-    }
-
-    .umy-wdw-upgrade-description {
-        font-size: 14px;
-    }
-}
-
-/* ================================================
-   TABLE HELP TEXT
-   ================================================ */
-.umy-wdw-table-help {
-    margin: 12px 24px 4px;
-    color: var(--wdw-gray-500);
-    font-size: 13px;
-    max-width: 760px;
 }
 
 /* ================================================
@@ -1191,6 +886,23 @@
 }
 
 .umy-wdw-role-card.is-unset .umy-wdw-field-hint {
+    display: block;
+}
+
+/* Shown only while a draft is chosen (drafts are hidden from roles that can't edit them) */
+.umy-wdw-draft-note {
+    display: none;
+    margin: 10px 0 0;
+    padding: 8px 10px;
+    border: 1px solid #fcd34d;
+    border-radius: var(--wdw-radius-md);
+    background: var(--wdw-warning-light);
+    color: #92400e;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.umy-wdw-role-card.is-draft .umy-wdw-draft-note {
     display: block;
 }
 

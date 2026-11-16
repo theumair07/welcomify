@@ -54,6 +54,18 @@
         cacheOptions: function () {
             const optionElements = this.optionsList.querySelectorAll('.umy-wdw-dropdown-option');
             this.options = Array.from(optionElements);
+
+            // Every option needs an id, so the trigger can point screen readers at the active one.
+            const baseId = this.panel.id || 'umy-wdw-tpl-list-' + dropdowns.length;
+            this.options.forEach(function (option, index) {
+                if (!option.id) {
+                    option.id = baseId + '-opt-' + index;
+                }
+            });
+
+            // Translated placeholder text, taken from the empty option printed by PHP.
+            const emptyTitle = this.optionsList.querySelector('.umy-wdw-dropdown-option[data-value=""] .umy-wdw-dropdown-option-title');
+            this.placeholderText = emptyTitle ? emptyTitle.textContent.trim() : '';
         },
 
         bindEvents: function () {
@@ -153,7 +165,7 @@
             // Update selected text display
             if (this.selectedText) {
                 if (value === '') {
-                    this.selectedText.innerHTML = '<span class="umy-wdw-dropdown-placeholder">— Select —</span>';
+                    this.selectedText.innerHTML = '<span class="umy-wdw-dropdown-placeholder">' + this.escapeHtml(this.placeholderText) + '</span>';
                 } else {
                     // Convert label to class name (e.g., "Bricks Template" -> "label-bricks-template")
                     const labelClass = label ? 'label-' + label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : '';
@@ -173,6 +185,12 @@
             });
             optionElement.classList.add('is-selected');
             optionElement.setAttribute('aria-selected', 'true');
+
+            // Drafts are only visible to users who can edit them: the role card shows a note.
+            const card = this.container.closest('.umy-wdw-role-card');
+            if (card) {
+                card.classList.toggle('is-draft', optionElement.dataset.status === 'draft');
+            }
 
             if (shouldClose) {
                 this.close();
@@ -231,6 +249,8 @@
             if (this.focusedIndex >= 0 && visibleOptions[this.focusedIndex]) {
                 visibleOptions[this.focusedIndex].classList.add('is-focused');
                 visibleOptions[this.focusedIndex].scrollIntoView({ block: 'nearest' });
+                // Focus stays on the trigger; this tells screen readers which option is active.
+                this.trigger.setAttribute('aria-activedescendant', visibleOptions[this.focusedIndex].id);
             }
         },
 
@@ -238,6 +258,7 @@
             this.options.forEach(function (opt) {
                 opt.classList.remove('is-focused');
             });
+            this.trigger.removeAttribute('aria-activedescendant');
         },
 
         escapeHtml: function (text) {
