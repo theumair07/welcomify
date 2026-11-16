@@ -26,17 +26,25 @@ delete_option( 'umy_wdw_version' );
 // Delete any transients.
 delete_transient( 'umy_wdw_settings_saved' );
 
+// Delete the per-user "panel dismissed" flag. User meta is shared by the whole network, so once is enough.
+delete_metadata( 'user', 0, 'umy_wdw_dismissed', '', true );
+
 // For multisite, clean up each site's options.
 if ( is_multisite() ) {
-	$umy_wdw_sites = get_sites( array( 'fields' => 'ids' ) );
-	
+	$umy_wdw_sites = get_sites(
+		array(
+			'fields' => 'ids',
+			'number' => 0, // All sites, not only the first 100.
+		)
+	);
+
 	foreach ( $umy_wdw_sites as $umy_wdw_site_id ) {
 		switch_to_blog( $umy_wdw_site_id );
-		
+
 		delete_option( '_umy_wdw_templates' );
 		delete_option( 'umy_wdw_hide_from_subsites' );
 		delete_transient( 'umy_wdw_settings_saved' );
-		
+
 		restore_current_blog();
 	}
 }

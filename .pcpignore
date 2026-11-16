@@ -1,0 +1,27 @@
+# Plugin Check (PCP): skip development files.
+# These never ship: .distignore strips them before the WordPress.org deploy.
+# Tick "Use .pcpignore custom exclusions" on the Plugin Check screen to use this file.
+# Paths are relative to the plugin folder; a trailing slash means a folder.
+
+# Git, GitHub and WordPress.org assets
+.git/
+.github/
+.wordpress-org/
+.distignore
+.gitattributes
+.gitignore
+.pcpignore
+
+# Tests and tooling
+tests/
+vendor/
+node_modules/
+composer.json
+composer.lock
+phpcs.xml.dist
+phpunit.xml.dist
+.phpunit.result.cache
+
+# Docs for GitHub
+README.md
+CONTRIBUTING.md

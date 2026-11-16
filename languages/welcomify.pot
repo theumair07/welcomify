@@ -1,22 +1,22 @@
 # Copyright (C) 2026 Umair Khan
-# This file is distributed under the GNU General Public License v2.0.
+# This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Welcomify 1.4.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/welcomify/\n"
+"Project-Id-Version: Welcomify 1.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/welcomify\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-04T22:06:09+00:00\n"
+"POT-Creation-Date: 2026-11-16T19:26:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: welcomify\n"
 
 #. Plugin Name of the plugin
 #: welcomify.php
-#: classes/class-umy-wdw-admin.php:82
+#: classes/class-umy-wdw-admin.php:103
 msgid "Welcomify - Custom Welcome Dashboard"
 msgstr ""
 
@@ -40,129 +40,202 @@ msgstr ""
 msgid "https://umairyousafzai.com/"
 msgstr ""
 
-#: classes/class-umy-wdw-admin.php:263
+#: classes/class-umy-wdw-admin.php:181
+msgid "Welcome panel"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:184
+msgid "Welcome"
+msgstr ""
+
+#: classes/class-umy-wdw-admin.php:476
 msgid "Welcomify"
 msgstr ""
 
-#: classes/class-umy-wdw-admin.php:277
-#: classes/class-umy-wdw-admin.php:278
-#: welcomify.php:332
+#: classes/class-umy-wdw-admin.php:492
+#: classes/class-umy-wdw-admin.php:493
+#: welcomify.php:327
 msgid "Settings"
 msgstr ""
 
-#: classes/class-umy-wdw-admin.php:287
-#: classes/class-umy-wdw-admin.php:288
-#: includes/white-label.php:20
-msgid "White Label"
+#: classes/class-umy-wdw-admin.php:502
+#: classes/class-umy-wdw-admin.php:503
+msgid "Getting Started"
 msgstr ""
 
-#: classes/class-umy-wdw-admin.php:471
+#: classes/class-umy-wdw-admin.php:721
 msgid "Dashboard Welcome Content"
 msgstr ""
 
-#: includes/admin-settings.php:27
-msgid "successfully set as custom Dashboard."
+#: includes/admin-settings.php:32
+msgid "Settings saved"
 msgstr ""
 
-#: includes/admin-settings.php:31
+#: includes/admin-settings.php:33
+msgid "Your changes are live. Open the dashboard to check them."
+msgstr ""
+
+#: includes/admin-settings.php:36
 msgid "View Dashboard"
 msgstr ""
 
-#: includes/admin-settings.php:45
+#: includes/admin-settings.php:43
+msgid "(opens in a new tab)"
+msgstr ""
+
+#: includes/admin-settings.php:46
+msgid "Dismiss notification"
+msgstr ""
+
+#: includes/admin-settings.php:67
 msgid "Please note, changing the template in subsite will override the main settings."
 msgstr ""
 
-#: includes/admin-settings.php:64
+#: includes/admin-settings.php:88
 msgid "Customize your WordPress dashboard with any page builder."
 msgstr ""
 
-#: includes/admin-settings.php:74
-#: includes/admin-settings.php:83
-msgid "User Role"
+#: includes/admin-settings.php:91
+msgid "New here? Getting started"
 msgstr ""
 
-#: includes/admin-settings.php:75
-#: includes/admin-settings.php:86
-msgid "Page / Template"
+#: includes/admin-settings.php:93
+#: includes/admin-settings.php:96
+msgid "All changes saved"
 msgstr ""
 
-#: includes/admin-settings.php:76
-#: includes/admin-settings.php:215
-msgid "Dismissible"
+#: includes/admin-settings.php:94
+msgid "You have unsaved changes"
 msgstr ""
 
-#: includes/admin-settings.php:119
-#: includes/admin-settings.php:138
-msgid "— Select —"
-msgstr ""
-
-#: includes/admin-settings.php:148
-msgid "Pages"
-msgstr ""
-
-#: includes/admin-settings.php:170
-msgid "Elementor Templates"
-msgstr ""
-
-#: includes/admin-settings.php:192
-msgid "Bricks Templates"
-msgstr ""
-
-#. translators: %s: User role name
-#: includes/admin-settings.php:217
-#, php-format
-msgid "Toggle dismissible for %s"
-msgstr ""
-
-#: includes/admin-settings.php:238
-msgid "Hide settings from network subsites"
-msgstr ""
-
-#: includes/admin-settings.php:251
+#: includes/admin-settings.php:99
 msgid "Save Changes"
 msgstr ""
 
-#: includes/admin-settings.php:263
-msgid "Create a page with any WordPress page builder, then select it here to display as the welcome panel on your dashboard."
+#: includes/admin-settings.php:131
+msgid "Page / Template"
 msgstr ""
 
-#: includes/template-library.php:26
-msgid "Template Library"
+#: includes/admin-settings.php:168
+#: includes/admin-settings.php:190
+msgid "— Select —"
 msgstr ""
 
-#: includes/template-library.php:27
-msgid "Import beautiful pre-designed templates with one click."
+#: includes/admin-settings.php:199
+#: includes/admin-settings.php:200
+msgid "Pages"
 msgstr ""
 
-#: includes/template-library.php:43
-#: includes/template-library.php:47
-msgid "Upgrade to Pro"
+#: includes/admin-settings.php:222
+#: includes/admin-settings.php:223
+msgid "Elementor Templates"
 msgstr ""
 
-#: includes/template-library.php:51
-msgid "One-click import for Elementor, Bricks, Divi & Gutenberg templates. Launch beautiful dashboards instantly."
+#: includes/admin-settings.php:245
+#: includes/admin-settings.php:246
+msgid "Bricks Templates"
 msgstr ""
 
-#: includes/template-library.php:57
-msgid "Upgrade to Welcomify Pro"
+#: includes/admin-settings.php:269
+msgid "Pick a template to turn on the options below."
 msgstr ""
 
-#: includes/welcome-panel.php:9
+#: includes/admin-settings.php:270
+msgid "This is a draft, so users with this role will not see it. Set it to Private instead."
+msgstr ""
+
+#: includes/admin-settings.php:282
+msgid "Dismissible"
+msgstr ""
+
+#: includes/admin-settings.php:283
+msgid "Let users close the welcome panel."
+msgstr ""
+
+#: includes/admin-settings.php:296
+msgid "Hide other widgets"
+msgstr ""
+
+#: includes/admin-settings.php:297
+msgid "Remove the other dashboard widgets for this role, even if the user dismisses the panel."
+msgstr ""
+
+#: includes/admin-settings.php:311
+msgid "Hide settings from network subsites"
+msgstr ""
+
+#: includes/getting-started.php:38
+msgid "Getting started with Welcomify"
+msgstr ""
+
+#: includes/getting-started.php:39
+msgid "Put your own design on the WordPress dashboard."
+msgstr ""
+
+#: includes/getting-started.php:45
+msgid "Build your welcome design"
+msgstr ""
+
+#: includes/getting-started.php:46
+msgid "What you can do depends on the editor you use:"
+msgstr ""
+
+#: includes/getting-started.php:52
+msgid "Bricks Builder"
+msgstr ""
+
+#: includes/getting-started.php:53
+msgid "Create a <b>template</b> in Bricks Builder."
+msgstr ""
+
+#: includes/getting-started.php:56
+msgid "Open Bricks templates"
+msgstr ""
+
+#: includes/getting-started.php:62
+msgid "Elementor"
+msgstr ""
+
+#: includes/getting-started.php:63
+msgid "Create a <b>template</b> in Elementor."
+msgstr ""
+
+#: includes/getting-started.php:66
+msgid "Open Elementor templates"
+msgstr ""
+
+#: includes/getting-started.php:80
+msgid "Any other editor"
+msgstr ""
+
+#: includes/getting-started.php:81
+msgid "Gutenberg, Kadence, Divi, Beaver Builder and others: create a <b>page</b> and keep it <b>Private</b>."
+msgstr ""
+
+#: includes/getting-started.php:83
+msgid "Add new page"
+msgstr ""
+
+#: includes/getting-started.php:93
+msgid "Set the page <strong>Visibility</strong> to <strong>Private</strong> (in the page settings), so visitors cannot open it directly."
+msgstr ""
+
+#: includes/getting-started.php:100
+msgid "Then choose it in Settings"
+msgstr ""
+
+#: includes/getting-started.php:101
+msgid "Your page or template is ready? Open Settings. There you can pick a different page or template for <strong>every user role</strong>. Then check your dashboard."
+msgstr ""
+
+#: includes/getting-started.php:105
+msgid "Open Settings"
+msgstr ""
+
+#: includes/welcome-panel.php:21
 msgid "Dismiss"
 msgstr ""
 
-#: includes/white-label.php:21
-msgid "Rebrand and customize the plugin appearance to match your brand."
-msgstr ""
-
-#: includes/white-label.php:33
-msgid "Coming Soon"
-msgstr ""
-
-#: includes/white-label.php:35
-msgid "White labeling options are on the way. You'll be able to customize the plugin name, branding, and visibility to match your business."
-msgstr ""
-
-#: welcomify.php:352
+#: welcomify.php:347
 msgid "Leave a Review"
 msgstr ""
