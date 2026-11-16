@@ -65,9 +65,9 @@
    BASE STYLES
    ================================================ */
 .umy-wdw-admin-wrap {
-    max-width: 1000px;
-    margin: 15px auto;
-    padding: 0 24px;
+    max-width: none;
+    margin: 0;
+    padding: 0 12px 24px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 14px;
     line-height: 1.5;
@@ -244,9 +244,10 @@
     text-align: center;
 }
 
-.umy-wdw-table th:last-child,
-.umy-wdw-table td:last-child {
-    width: 120px;
+/* Last two columns (Dismissible, Hide other widgets) */
+.umy-wdw-table th:nth-last-child(-n+2),
+.umy-wdw-table td:nth-last-child(-n+2) {
+    width: 130px;
     text-align: center;
 }
 
@@ -304,49 +305,49 @@
     background: var(--wdw-gray-400);
 }
 
-/* Role-specific colors - dismiss button style with light bg */
-tr:nth-child(1) .umy-wdw-role-badge {
-    background: #fef2f2;
+/* Role-specific colours, by role (custom roles keep the neutral grey) */
+.umy-wdw-role-card[data-role="administrator"] .umy-wdw-role-badge {
+    background: var(--wdw-danger-light);
     color: var(--wdw-role-admin);
 }
 
-tr:nth-child(1) .umy-wdw-role-badge::before {
+.umy-wdw-role-card[data-role="administrator"] .umy-wdw-role-badge::before {
     background: var(--wdw-role-admin);
 }
 
-tr:nth-child(2) .umy-wdw-role-badge {
-    background: #eff6ff;
+.umy-wdw-role-card[data-role="editor"] .umy-wdw-role-badge {
+    background: var(--wdw-primary-light);
     color: var(--wdw-role-editor);
 }
 
-tr:nth-child(2) .umy-wdw-role-badge::before {
+.umy-wdw-role-card[data-role="editor"] .umy-wdw-role-badge::before {
     background: var(--wdw-role-editor);
 }
 
-tr:nth-child(3) .umy-wdw-role-badge {
-    background: #ecfdf5;
+.umy-wdw-role-card[data-role="author"] .umy-wdw-role-badge {
+    background: var(--wdw-success-light);
     color: var(--wdw-role-author);
 }
 
-tr:nth-child(3) .umy-wdw-role-badge::before {
+.umy-wdw-role-card[data-role="author"] .umy-wdw-role-badge::before {
     background: var(--wdw-role-author);
 }
 
-tr:nth-child(4) .umy-wdw-role-badge {
-    background: #fffbeb;
+.umy-wdw-role-card[data-role="contributor"] .umy-wdw-role-badge {
+    background: var(--wdw-warning-light);
     color: var(--wdw-role-contributor);
 }
 
-tr:nth-child(4) .umy-wdw-role-badge::before {
+.umy-wdw-role-card[data-role="contributor"] .umy-wdw-role-badge::before {
     background: var(--wdw-role-contributor);
 }
 
-tr:nth-child(5) .umy-wdw-role-badge {
+.umy-wdw-role-card[data-role="subscriber"] .umy-wdw-role-badge {
     background: #f5f3ff;
     color: var(--wdw-role-subscriber);
 }
 
-tr:nth-child(5) .umy-wdw-role-badge::before {
+.umy-wdw-role-card[data-role="subscriber"] .umy-wdw-role-badge::before {
     background: var(--wdw-role-subscriber);
 }
 
@@ -884,29 +885,6 @@ tr:nth-child(5) .umy-wdw-role-badge::before {
 }
 
 /* ================================================
-   INFO BOX
-   ================================================ */
-.umy-wdw-info-box {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
-    background: var(--wdw-primary-light);
-    border: 1px solid #bfdbfe;
-    border-radius: var(--wdw-radius-md);
-    color: #1e40af;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.umy-wdw-info-box svg {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    margin-top: 1px;
-}
-
-/* ================================================
    RESPONSIVE DESIGN
    ================================================ */
 @media screen and (max-width: 782px) {
@@ -1159,5 +1137,607 @@ tr:nth-child(5) .umy-wdw-role-badge::before {
 
     .umy-wdw-upgrade-description {
         font-size: 14px;
+    }
+}
+
+/* ================================================
+   TABLE HELP TEXT
+   ================================================ */
+.umy-wdw-table-help {
+    margin: 12px 24px 4px;
+    color: var(--wdw-gray-500);
+    font-size: 13px;
+    max-width: 760px;
+}
+
+/* ================================================
+   ROLE CARDS
+   One card per role, in a grid that uses the full page width.
+   ================================================ */
+.umy-wdw-role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+}
+
+.umy-wdw-role-card {
+    margin-bottom: 0;
+}
+
+.umy-wdw-role-card-body {
+    padding: 14px 16px 16px;
+}
+
+.umy-wdw-field {
+    margin-bottom: 8px;
+}
+
+.umy-wdw-field-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--wdw-gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Shown only while no template is chosen */
+.umy-wdw-field-hint {
+    display: none;
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: var(--wdw-gray-500);
+}
+
+.umy-wdw-role-card.is-unset .umy-wdw-field-hint {
+    display: block;
+}
+
+.umy-wdw-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--wdw-gray-100);
+    transition: opacity var(--wdw-transition-fast);
+}
+
+/* The options do nothing until a template is chosen */
+.umy-wdw-role-card.is-unset .umy-wdw-option {
+    opacity: 0.5;
+}
+
+.umy-wdw-option-title {
+    display: block;
+    font-weight: 600;
+    color: var(--wdw-gray-900);
+    cursor: pointer;
+}
+
+.umy-wdw-option-text span {
+    display: block;
+    font-size: 13px;
+    color: var(--wdw-gray-500);
+}
+
+/* ================================================
+   STICKY SAVE BAR
+   Pinned to the top while scrolling, under the WordPress admin bar.
+   ================================================ */
+.umy-wdw-savebar {
+    position: sticky;
+    top: 44px; /* 32px admin bar + a 12px gap, so it never touches it */
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+    padding: 10px 16px;
+    background: var(--wdw-white);
+    border: 1px solid var(--wdw-gray-200);
+    border-radius: var(--wdw-radius-xl);
+    box-shadow: var(--wdw-shadow-sm);
+}
+
+@media screen and (max-width: 782px) {
+    .umy-wdw-savebar {
+        top: 58px; /* 46px admin bar + 12px gap */
+    }
+}
+
+/* Below 600px WordPress' admin bar scrolls away, so only the gap is needed */
+@media screen and (max-width: 600px) {
+    .umy-wdw-savebar {
+        top: 12px;
+        flex-wrap: wrap;
+    }
+}
+
+.umy-wdw-bartitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    margin-right: auto;
+}
+
+.umy-wdw-bartitle .umy-wdw-header-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--wdw-radius-md);
+}
+
+.umy-wdw-bartitle .umy-wdw-header-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.umy-wdw-bartitle .umy-wdw-header-text h1 {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.umy-wdw-bartitle .umy-wdw-header-text p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.umy-wdw-savestatus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--wdw-gray-500);
+}
+
+.umy-wdw-savestatus-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+}
+
+.umy-wdw-savebar.is-dirty .umy-wdw-savestatus {
+    color: #92400e;
+    font-weight: 600;
+}
+
+.umy-wdw-savebar.is-dirty .umy-wdw-savestatus-dot {
+    background: #f59e0b;
+}
+
+/* Save looks inactive until something changes (admin-settings-form.js ignores the click) */
+.umy-wdw-btn[aria-disabled="true"],
+.umy-wdw-btn[aria-disabled="true"]:hover,
+.umy-wdw-btn[aria-disabled="true"]:focus {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ================================================
+   TOAST NOTIFICATION (settings saved)
+   Slides in at the top right, closes itself after
+   data-duration ms, pauses while hovered or focused.
+   ================================================ */
+.umy-wdw-toast {
+    position: fixed;
+    top: 112px;
+    right: 24px;
+    z-index: 100000;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    padding: 14px 44px 18px 14px;
+    background: #fff;
+    border: 1px solid var(--wdw-gray-200);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    animation: umy-wdw-toast-in 0.25s ease-out;
+}
+
+body.rtl .umy-wdw-toast {
+    right: auto;
+    left: 24px;
+}
+
+.umy-wdw-toast.is-leaving {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.umy-wdw-toast-icon {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--wdw-success-light);
+    color: #059669;
+}
+
+.umy-wdw-toast-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.umy-wdw-toast-body {
+    min-width: 0;
+}
+
+.umy-wdw-toast-title {
+    margin: 0 0 2px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--wdw-gray-900);
+}
+
+.umy-wdw-toast-text {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--wdw-gray-600);
+}
+
+.umy-wdw-toast-text strong {
+    font-weight: 600;
+    color: var(--wdw-gray-900);
+}
+
+.umy-wdw-toast-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wdw-primary-hover);
+    text-decoration: none;
+}
+
+.umy-wdw-toast-link:hover,
+.umy-wdw-toast-link:focus-visible {
+    text-decoration: underline;
+}
+
+.umy-wdw-toast-link svg {
+    flex: none;
+    width: 13px;
+    height: 13px;
+}
+
+.umy-wdw-toast-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--wdw-gray-400);
+    cursor: pointer;
+}
+
+body.rtl .umy-wdw-toast-close {
+    right: auto;
+    left: 8px;
+}
+
+.umy-wdw-toast-close:hover,
+.umy-wdw-toast-close:focus {
+    background: var(--wdw-gray-100);
+    color: var(--wdw-gray-900);
+}
+
+.umy-wdw-toast-close svg {
+    width: 14px;
+    height: 14px;
+}
+
+.umy-wdw-toast-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--wdw-success);
+    transform-origin: left;
+    animation-name: umy-wdw-toast-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+body.rtl .umy-wdw-toast-progress {
+    transform-origin: right;
+}
+
+/* Pause while hovered, or while a control is focused with the keyboard.
+   A mouse click that leaves focus on the link must not keep it paused. */
+.umy-wdw-toast:hover .umy-wdw-toast-progress,
+.umy-wdw-toast:has(:focus-visible) .umy-wdw-toast-progress {
+    animation-play-state: paused;
+}
+
+/* After "View Dashboard" is clicked the toast keeps counting down and closes. */
+.umy-wdw-toast.is-resumed .umy-wdw-toast-progress {
+    animation-play-state: running !important;
+}
+
+/* No WordPress focus box after a mouse click; a clear ring for keyboard focus only. */
+.umy-wdw-toast-link:focus,
+.umy-wdw-toast-close:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.umy-wdw-toast-link:focus-visible,
+.umy-wdw-toast-close:focus-visible {
+    outline: 2px solid var(--wdw-primary);
+    outline-offset: 2px;
+}
+
+@keyframes umy-wdw-toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes umy-wdw-toast-progress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .umy-wdw-toast,
+    body.rtl .umy-wdw-toast {
+        top: 126px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+        max-width: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .umy-wdw-toast {
+        animation: none;
+    }
+
+    .umy-wdw-toast.is-leaving {
+        transition: none;
+    }
+}
+
+/* ================================================
+   GETTING STARTED PAGE
+   ================================================ */
+.umy-wdw-start-page {
+    padding-bottom: 96px;
+}
+
+.umy-wdw-guide {
+    margin: 12px 0;
+    padding: 24px 28px;
+}
+
+.umy-wdw-guide h2,
+.umy-wdw-next h2 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--wdw-gray-900);
+}
+
+.umy-wdw-guide-intro {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: var(--wdw-gray-600);
+}
+
+.umy-wdw-guide-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.umy-wdw-guide-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 12px 0;
+    border-top: 1px solid var(--wdw-gray-100);
+}
+
+/* Builder logos: one box size for all, vertically centred next to the text */
+.umy-wdw-guide-icon {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--wdw-gray-200);
+    border-radius: var(--wdw-radius-md);
+    background: var(--wdw-white);
+}
+
+.umy-wdw-guide-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.umy-wdw-guide-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.umy-wdw-guide-name strong {
+    display: block;
+    font-size: 14px;
+    color: var(--wdw-gray-900);
+}
+
+.umy-wdw-guide-name small {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--wdw-gray-500);
+}
+
+.umy-wdw-guide-name small b {
+    color: var(--wdw-gray-800);
+}
+
+/* Several editors: small overlapping squares, like an avatar stack */
+.umy-wdw-stack {
+    width: auto;
+    min-width: 48px;
+    padding: 0 12px 0 20px;
+}
+
+.umy-wdw-stack img,
+.umy-wdw-stack-more {
+    width: 30px;
+    height: 30px;
+    margin-left: -8px;
+    border: 2px solid var(--wdw-white);
+    border-radius: 8px;
+    background: var(--wdw-white);
+    box-shadow: 0 0 0 1px var(--wdw-gray-200);
+    object-fit: contain;
+}
+
+.umy-wdw-stack-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wdw-gray-100);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--wdw-gray-600);
+}
+
+.umy-wdw-tip {
+    margin: 12px 0 0;
+}
+
+.umy-wdw-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--wdw-primary-hover);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.umy-wdw-link:hover,
+.umy-wdw-link:focus {
+    text-decoration: underline;
+}
+
+.umy-wdw-link svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* On this page the top bar scrolls away with the content (it sticks only on the Settings page). */
+.umy-wdw-start-page .umy-wdw-savebar {
+    position: static;
+}
+
+/* Full-width bar fixed to the bottom of the screen. Left offset = the admin menu width. */
+.umy-wdw-next {
+    position: fixed;
+    bottom: 0;
+    left: 160px;
+    right: 0;
+    z-index: 9990;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 0;
+    padding: 14px 28px;
+    background: var(--wdw-white);
+    border-top: 1px solid var(--wdw-gray-200);
+    box-shadow: 0 -4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.umy-wdw-next h2 {
+    font-size: 15px;
+    margin: 0 0 2px;
+}
+
+.umy-wdw-next p {
+    margin: 0;
+    max-width: 640px;
+    font-size: 14px;
+    color: var(--wdw-gray-600);
+}
+
+body.folded .umy-wdw-next {
+    left: 36px;
+}
+
+body.rtl .umy-wdw-next {
+    left: 0;
+    right: 160px;
+}
+
+body.rtl.folded .umy-wdw-next {
+    right: 36px;
+}
+
+@media screen and (max-width: 960px) {
+    body.auto-fold .umy-wdw-next {
+        left: 36px;
+    }
+
+    body.rtl.auto-fold .umy-wdw-next {
+        left: 0;
+        right: 36px;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .umy-wdw-next,
+    body.rtl .umy-wdw-next {
+        left: 0;
+        right: 0;
     }
 }

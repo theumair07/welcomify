@@ -58,6 +58,14 @@ final class Admin {
      */
     public $current_role;
 
+    /**
+     * Holds the Getting Started page hook.
+     *
+     * @since 1.4.2
+     * @var string
+     */
+    public $start_page_hook;
+
 	/**
 	 * Initializes the admin settings.
 	 *
@@ -77,6 +85,151 @@ final class Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 1000 );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'wp_ajax_umy_wdw_dismiss', array( $this, 'ajax_dismiss' ) );
+		add_filter( 'screen_settings', array( $this, 'screen_settings' ), 10, 2 );
+	}
+
+	/**
+	 * Whether the "Welcome" panel toggle / own dismiss is needed for the current user.
+	 *
+	 * Roles with edit_theme_options use WordPress' own Welcome checkbox and
+	 * dismiss. Other roles get Welcomify's own, because core hides both from them.
+	 *
+	 * @since 1.4.2
+	 * @param string $role Role slug.
+	 * @return bool
+	 */
+	private function uses_own_panel_controls( $role )
+	{
+		return ! current_user_can( 'edit_theme_options' )
+			&& ! empty( $this->settings[ $role ]['template'] );
+	}
+
+	/**
+	 * Adds a "Welcome" checkbox to Screen Options for roles that can't see WordPress' own.
+	 *
+	 * Lets users bring the panel back after dismissing it, the same way the
+	 * Welcome checkbox works for administrators.
+	 *
+	 * @since 1.4.2
+	 * @param string     $settings Existing Screen Options HTML.
+	 * @param \WP_Screen $screen   Current screen.
+	 * @return string
+	 */
+	public function screen_settings( $settings, $screen )
+	{
+		if ( ! $screen || 'dashboard' !== $screen->id ) {
+			return $settings;
+		}
+
+		$role = $this->get_user_role();
+
+		if ( ! $this->uses_own_panel_controls( $role ) || empty( $this->settings[ $role ]['dismissible'] ) ) {
+			return $settings;
+		}
+
+		ob_start();
+		?>
+		<fieldset class="metabox-prefs umy-wdw-screen-option">
+			<legend><?php esc_html_e( 'Welcome panel', 'welcomify' ); ?></legend>
+			<label for="umy-wdw-panel-hide">
+				<input type="checkbox" id="umy-wdw-panel-hide" <?php checked( ! $this->is_dismissed( $role ) ); ?> />
+				<?php esc_html_e( 'Welcome', 'welcomify' ); ?>
+			</label>
+		</fieldset>
+		<?php
+		return $settings . ob_get_clean();
+	}
+
+	/**
+	 * Loads the dashboard script for roles that use Welcomify's own panel controls.
+	 *
+	 * @since 1.4.2
+	 * @return void
+	 */
+	private function enqueue_dashboard_script()
+	{
+		$role = $this->get_user_role();
+
+		if ( ! $this->uses_own_panel_controls( $role ) ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'umy-wdw-dashboard',
+			UMY_WDW_URL . 'assets/js/dashboard-panel.js',
+			array( 'jquery' ),
+			UMY_WDW_VER,
+			true
+		);
+
+		wp_localize_script(
+			'umy-wdw-dashboard',
+			'umyWdwDashboard',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'umy_wdw_dismiss' ),
+			)
+		);
+	}
+
+	/**
+	 * Whether the current user has dismissed the panel for the template assigned to their role.
+	 *
+	 * Used for roles that cannot use WordPress' own welcome panel dismiss
+	 * (it needs the edit_theme_options capability). Dismissal is stored per
+	 * template, so assigning a new template shows the panel again.
+	 *
+	 * @since 1.4.2
+	 * @param string $role Role slug.
+	 * @return bool
+	 */
+	private function is_dismissed( $role )
+	{
+		if ( empty( $this->settings[ $role ]['dismissible'] ) || empty( $this->settings[ $role ]['template'] ) ) {
+			return false;
+		}
+
+		$dismissed = get_user_meta( get_current_user_id(), 'umy_wdw_dismissed', true );
+
+		return ! empty( $dismissed ) && absint( $dismissed ) === absint( $this->settings[ $role ]['template'] );
+	}
+
+	/**
+	 * AJAX: dismiss the welcome panel for the current user.
+	 *
+	 * @since 1.4.2
+	 * @return void
+	 */
+	public function ajax_dismiss()
+	{
+		check_ajax_referer( 'umy_wdw_dismiss', 'nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( null, 403 );
+		}
+
+		$this->settings = $this->get_settings();
+		$role           = $this->get_user_role();
+
+		// Only allowed when the role is set to dismissible and has a template.
+		if ( empty( $this->settings[ $role ]['dismissible'] ) || empty( $this->settings[ $role ]['template'] ) ) {
+			wp_send_json_error( null, 403 );
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified above.
+		$visible = ! empty( $_POST['visible'] );
+
+		if ( $visible ) {
+			delete_user_meta( get_current_user_id(), 'umy_wdw_dismissed' );
+
+			// Fresh iframe URL (its token is short-lived), so the panel can be shown again without a page reload.
+			wp_send_json_success( array( 'url' => $this->get_embed_url( $role ) ) );
+		}
+
+		update_user_meta( get_current_user_id(), 'umy_wdw_dismissed', absint( $this->settings[ $role ]['template'] ) );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -87,12 +240,17 @@ final class Admin {
 	 */
 	public function admin_enqueue_scripts( $hook )
 	{
-		// Only load on our plugin pages
-		$allowed_hooks = array(
-			'toplevel_page_' . $this->settings_page,
-		);
+		// Dashboard: panel controls for roles that can't use WordPress' own.
+		if ( 'index.php' === $hook ) {
+			$this->enqueue_dashboard_script();
+			return;
+		}
 
-		if ( ! in_array( $hook, $allowed_hooks, true ) ) {
+		// Only load on our plugin pages
+		$is_settings = ( 'toplevel_page_' . $this->settings_page ) === $hook;
+		$is_start    = ! empty( $this->start_page_hook ) && $this->start_page_hook === $hook;
+
+		if ( ! $is_settings && ! $is_start ) {
 			return;
 		}
 
@@ -103,10 +261,24 @@ final class Admin {
 			UMY_WDW_VER
 		);
 
+		// The Getting Started guide only needs the styles.
+		if ( $is_start ) {
+			return;
+		}
+
 		// Enqueue notice countdown script (for success message auto-dismiss)
 		wp_enqueue_script(
 			'umy-wdw-admin-notice',
 			UMY_WDW_URL . 'assets/js/admin-notice.js',
+			array(),
+			UMY_WDW_VER,
+			true
+		);
+
+		// Enqueue unsaved-changes tracking (sticky save bar + leave warning)
+		wp_enqueue_script(
+			'umy-wdw-admin-settings-form',
+			UMY_WDW_URL . 'assets/js/admin-settings-form.js',
 			array(),
 			UMY_WDW_VER,
 			true
@@ -177,6 +349,13 @@ final class Admin {
 					return;
 				}
 
+				// "Hide other widgets": the admin's choice. The other dashboard widgets are removed for this role,
+				// also when the user dismisses the panel. On unless switched off; roles saved before this
+				// option existed keep the clean dashboard they had.
+				if ( ! isset( $settings[ $role ]['hide_widgets'] ) || ! empty( $settings[ $role ]['hide_widgets'] ) ) {
+					add_action( 'wp_dashboard_setup', array( $this, 'remove_dashboard_widgets' ), PHP_INT_MAX );
+				}
+
 				remove_action( 'welcome_panel', 'wp_welcome_panel' );
 				add_action( 'welcome_panel', array( $this, 'welcome_panel' ) );
 
@@ -187,6 +366,28 @@ final class Admin {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Removes every dashboard widget (they are then also missing from Screen Options).
+	 *
+	 * Runs last on wp_dashboard_setup so widgets added by other plugins are removed too.
+	 *
+	 * @since 1.4.2
+	 * @return void
+	 */
+	public function remove_dashboard_widgets()
+	{
+		global $wp_meta_boxes;
+
+		// Keep the (empty) dashboard entry instead of unsetting it: WordPress only prints the
+		// Screen Options panel, with its Welcome checkbox, when this entry exists.
+		$wp_meta_boxes['dashboard'] = array(
+			'normal'  => array(),
+			'side'    => array(),
+			'column3' => array(),
+			'column4' => array(),
+		);
 	}
 
 	/**
@@ -243,7 +444,40 @@ final class Admin {
 				$slug,
 				$func
 			);
+
+			// Add "Getting Started" submenu
+			$this->start_page_hook = add_submenu_page(
+				$slug,
+				__( 'Getting Started', 'welcomify' ),
+				__( 'Getting Started', 'welcomify' ),
+				$cap,
+				'umy-wdw-start',
+				array( $this, 'render_start' )
+			);
+
+			// List Getting Started first (the menu then opens it first).
+			global $submenu;
+			if ( isset( $submenu[ $slug ] ) ) {
+				foreach ( $submenu[ $slug ] as $index => $item ) {
+					if ( 'umy-wdw-start' === $item[2] ) {
+						unset( $submenu[ $slug ][ $index ] );
+						array_unshift( $submenu[ $slug ], $item );
+						break;
+					}
+				}
+			}
 		}
+	}
+
+	/**
+	 * Renders the Getting Started guide.
+	 *
+	 * @since 1.4.2
+	 * @return void
+	 */
+	public function render_start()
+	{
+		include UMY_WDW_DIR . 'includes/getting-started.php';
 	}
 
 	/**
@@ -265,6 +499,57 @@ final class Admin {
 	}
 
 	/**
+	 * Builds the iframe URL for the template assigned to a role.
+	 *
+	 * Includes the embed flags and a fresh signed token (see Embed_Access).
+	 *
+	 * @since 1.4.2
+	 * @param string $role Role slug.
+	 * @return string Empty string when the role has no valid template.
+	 */
+	private function get_embed_url( $role )
+	{
+		if ( empty( $this->settings[ $role ]['template'] ) ) {
+			return '';
+		}
+
+		$template_id  = $this->settings[ $role ]['template'];
+		$site_id      = isset( $this->settings[ $role ]['site'] ) ? $this->settings[ $role ]['site'] : '';
+		$is_multisite = is_multisite();
+
+		// Handle multisite
+		if ( ! empty( $site_id ) && $is_multisite ) {
+			switch_to_blog( $site_id );
+		}
+
+		// Get the page URL
+		$page_url = get_permalink( $template_id );
+
+		if ( ! empty( $site_id ) && $is_multisite ) {
+			restore_current_blog();
+		}
+
+		if ( ! $page_url ) {
+			return '';
+		}
+
+		// Always pass hide parameters (auto-hide enabled)
+		$url_params = array(
+			'umy_wdw_embed' => '1',
+			'hide_header'   => '1',
+			'hide_footer'   => '1',
+			'hide_title'    => '1',
+		);
+
+		// Add parameters to page URL
+		$page_url = add_query_arg( $url_params, $page_url );
+
+		// Signed, short-lived token so Bricks/Elementor let this iframe request
+		// through for roles without builder access (e.g. custom roles).
+		return Embed_Access::add_token( $page_url, $template_id );
+	}
+
+	/**
 	 * Renders template content in welcome panel using iframe embed.
 	 *
 	 * @since 1.0.0
@@ -277,44 +562,28 @@ final class Admin {
 
 		if ( ! empty( $settings ) && isset( $settings[ $role ] ) ) {
 			if ( isset( $settings[ $role ]['template'] ) && ! empty( $settings[ $role ]['template'] ) ) {
-				$template_id = $settings[ $role ]['template'];
-				$site_id 	 = isset( $settings[ $role ]['site'] ) ? $settings[ $role ]['site'] : '';
 				$dismissible = ! empty( $settings[ $role ]['dismissible'] );
-				$is_multisite = is_multisite();
-
-				// Handle multisite
-				if ( ! empty( $site_id ) && $is_multisite ) {
-					switch_to_blog( $site_id );
-				}
-
-				// Get the page URL
-				$page_url = get_permalink( $template_id );
-
-				if ( ! empty( $site_id ) && $is_multisite ) {
-					restore_current_blog();
-				}
+				// On unless switched off. Roles saved before this option existed keep their clean dashboard.
+				$hide_widgets = ! isset( $settings[ $role ]['hide_widgets'] ) || ! empty( $settings[ $role ]['hide_widgets'] );
+				$page_url = $this->get_embed_url( $role );
 
 				if ( ! $page_url ) {
 					return;
 				}
 
-				// Always pass hide parameters (auto-hide enabled)
-				$url_params = array(
-					'umy_wdw_embed'    => '1',
-					'hide_header'  => '1',
-					'hide_footer'  => '1',
-					'hide_title'   => '1'
-				);
-				
-				// Add parameters to page URL
-				$page_url = add_query_arg( $url_params, $page_url );
+				// A dismissed panel (roles using Welcomify's own controls) is still printed but hidden.
+				// Its iframe is not loaded until the user turns the panel back on in Screen Options.
+				$deferred = ! current_user_can( 'edit_theme_options' ) && $this->is_dismissed( $role );
 
 				// Add inline styles via WordPress API
 				$css = '
-/* Hide WordPress Dashboard title */
-#wpbody-content>.wrap>h1,
-#wpbody-content h1.open,
-.wrap>h1:first-child {
+/* Hide WordPress Dashboard title while the Welcomify panel is showing */
+body:has(#welcome-panel:not(.hidden) #umy-wdw-dashboard-welcome) #wpbody-content>.wrap>h1,
+body:has(#welcome-panel:not(.hidden) #umy-wdw-dashboard-welcome) #wpbody-content h1.open,
+body:has(#welcome-panel:not(.hidden) #umy-wdw-dashboard-welcome) .wrap>h1:first-child,
+body:has(#umy-wdw-dashboard-welcome:not(#welcome-panel *):not(.umy-wdw-is-dismissed)) #wpbody-content>.wrap>h1,
+body:has(#umy-wdw-dashboard-welcome:not(#welcome-panel *):not(.umy-wdw-is-dismissed)) #wpbody-content h1.open,
+body:has(#umy-wdw-dashboard-welcome:not(#welcome-panel *):not(.umy-wdw-is-dismissed)) .wrap>h1:first-child {
     display: none !important;
 }
 
@@ -342,31 +611,23 @@ final class Admin {
     border-radius: 0 !important;
 }
 
-/* Hide the entire dashboard widgets area to remove whitespace */
-#dashboard-widgets-wrap,
-#dashboard-widgets,
-#dashboard-widgets .postbox-container,
-#dashboard-widgets .meta-box-sortables,
-#dashboard-widgets .meta-box-sortables.empty-container,
-#dashboard-widgets .postbox-container .empty-container,
-#normal-sortables,
-#side-sortables,
-#column3-sortables,
-#column4-sortables {
-    display: none !important;
-    border: none !important;
-    min-height: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    visibility: hidden !important;
-    overflow: hidden !important;
-}
-
 .welcome-panel::before,
 .welcome-panel::after {
     display: none !important;
 }';
+
+				if ( $hide_widgets ) {
+					// The widgets themselves are removed on the server (remove_dashboard_widgets()), so they are
+					// not in Screen Options either. This only hides the empty dashed boxes WordPress leaves
+					// behind and the now pointless column layout option.
+					$css .= '
+
+/* Other dashboard widgets are removed: hide the empty widget area */
+#dashboard-widgets-wrap,
+#adv-settings .columns-prefs {
+    display: none !important;
+}';
+				}
 
 				if ( ! $dismissible ) {
 					$css .= '
@@ -409,7 +670,7 @@ final class Admin {
 				?>
 <div class="umy-wdw-embed-container" id="umy-wdw-embed-wrapper"
     style="opacity: 0; transition: opacity 0.15s ease-in-out;">
-    <iframe id="umy-wdw-page-embed" class="umy-wdw-embed-iframe" src="<?php echo esc_url( $page_url ); ?>"
+    <iframe id="umy-wdw-page-embed" class="umy-wdw-embed-iframe" <?php echo $deferred ? 'data-src' : 'src'; ?>="<?php echo esc_url( $page_url ); ?>"
         scrolling="no" title="<?php esc_attr_e( 'Dashboard Welcome Content', 'welcomify' ); ?>"></iframe>
 </div>
 <?php
@@ -844,7 +1105,6 @@ final class Admin {
 		}
 
 		$data = array();
-		$saved_pages = array();
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized within loop
 		foreach ( wp_unslash( $_POST['umy_wdw_templates'] ) as $user_role => $template ) {
@@ -856,26 +1116,17 @@ final class Admin {
 				'template'    => isset( $template['template'] ) ? absint( $template['template'] ) : 0,
 				'site'        => isset( $template['site'] ) ? absint( $template['site'] ) : 0,
 				'dismissible' => isset( $template['dismissible'] ) ? 1 : 0,
+				'hide_widgets' => isset( $template['hide_widgets'] ) ? 1 : 0,
 			);
 			
 			$data[ $role_key ] = $sanitized;
 			
-			// Collect page names for success message
-			if ( ! empty( $sanitized['template'] ) ) {
-				$page = get_post( $sanitized['template'] );
-				if ( $page ) {
-					$saved_pages[] = $page->post_title;
-				}
-			}
 		}
 
 		update_option( '_umy_wdw_templates', $data );
 
-		// Set success message transient
-		if ( ! empty( $saved_pages ) ) {
-			$saved_pages = array_unique( $saved_pages );
-			set_transient( 'umy_wdw_settings_saved', $saved_pages, 30 );
-		}
+		// Remember that settings were saved, for the success toast. Always set, also when every role is switched off.
+		set_transient( 'umy_wdw_settings_saved', 1, 30 );
 
 		// Handle multisite option
 		if ( is_multisite() && get_current_blog_id() == 1 ) {
